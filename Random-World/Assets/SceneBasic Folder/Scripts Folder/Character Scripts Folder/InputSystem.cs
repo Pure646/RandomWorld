@@ -6,8 +6,12 @@ public class InputSystem : MonoBehaviour
 {
     public static InputSystem Instance { get; private set; }
 
-    private Vector2 Movement => movement;
-    public Vector2 movement;
+    public Vector2 Movement => move;
+    private Vector2 move;
+
+    public Vector2 Looking => look;
+    private Vector2 look;
+
     private void Awake()
     {
         Instance = this;
@@ -17,6 +21,10 @@ public class InputSystem : MonoBehaviour
     {
         float InputX = Input.GetAxis("Horizontal");
         float InputY = Input.GetAxis("Vertical");
-        movement = new Vector2(InputX, InputY);
+        move = new Vector2(InputX, InputY);
+
+        float LookX = Input.GetAxis("Mouse X");
+        float LookY = Input.GetAxis("Mouse Y");
+        look = new Vector2(LookX, LookY);
     }
 }
