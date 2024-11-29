@@ -1,23 +1,43 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour
+namespace RandomWorld
 {
-    public CharacterBase characterBase;
-
-    private void Awake()
+    public class CharacterController : MonoBehaviour
     {
-        characterBase = GetComponent<CharacterBase>();
-    }
+        public CharacterBase characterBase;
 
-    private void Update()
-    {
-        Vector2 MoveInput = InputSystem.Instance.Movement;
-        characterBase.Move(MoveInput);
+        private void Awake()
+        {
+            characterBase = GetComponent<CharacterBase>();
+        }
 
-        Vector2 LookInput = InputSystem.Instance.Looking;
-        characterBase.Rotate(LookInput.x, LookInput.y);
+        private void Start()
+        {
+            InputSystem.Instance.Jump += ExecuteJump;
+        }
+
+        void ExecuteJump()
+        {
+            characterBase.Jump();
+        }
+
+        private void Update()
+        {
+            Vector2 MoveInput = InputSystem.Instance.Movement;
+            characterBase.Move(MoveInput);
+
+            Vector2 LookInput = InputSystem.Instance.Looking;
+            characterBase.Rotate(LookInput.x);
+
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                characterBase.Jump();
+            }
+        }
+
     }
-    
 }
+
