@@ -17,8 +17,12 @@ namespace RandomWorld
         private void Start()
         {
             InputSystem.Instance.Jump += ExecuteJump;
+            InputSystem.Instance.Run += Running;
         }
-
+        void Running()
+        {
+            characterBase.Running();
+        }
         void ExecuteJump()
         {
             characterBase.Jump();
@@ -32,12 +36,8 @@ namespace RandomWorld
             Vector2 LookInput = InputSystem.Instance.Looking;
             characterBase.Rotate(LookInput.x);
 
-            if(Input.GetKeyDown(KeyCode.Space))
-            {
-                characterBase.Jump();
-            }
-        }
 
+        }
     }
 }
 

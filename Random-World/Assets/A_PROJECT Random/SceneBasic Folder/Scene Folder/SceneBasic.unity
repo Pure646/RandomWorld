@@ -903,6 +903,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: unitychan
       objectReference: {fileID: 0}
+    - target: {fileID: 100326, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 400124, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.9990836
@@ -1107,16 +1111,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1
-  GroundedRadius: 0.28
-  GroundedOffset: -0.14
-  GroundLayers:
+  jumpHeight: 1.2
+  fallTimeout: 0.3
+  jumpTimeout: 0.5
+  gravity: -15
+  groundedOffset: -0.14
+  groundedRadius: 0.28
+  groundLayers:
     serializedVersion: 2
     m_Bits: 1
-  gravity: 0
-  jumpHeight: 10
-  fallTimeout: 0.3
-  jumpTimeout: 0.3
-  terminalVelocity: 0
 --- !u!4 &1318609016 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400326, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
