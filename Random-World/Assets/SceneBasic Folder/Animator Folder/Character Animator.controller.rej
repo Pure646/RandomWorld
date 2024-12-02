@@ -1,0 +1,11 @@
+diff a/Random-World/Assets/SceneBasic Folder/Animator Folder/Character Animator.controller b/Random-World/Assets/SceneBasic Folder/Animator Folder/Character Animator.controller	(rejected hunks)
+@@ -39,9 +39,6 @@
+   - m_ConditionMode: 2
+     m_ConditionEvent: OnAir
+     m_EventTreshold: 0
+-  - m_ConditionMode: 1
+-    m_ConditionEvent: ClickJump
+-    m_EventTreshold: 0
+   m_DstStateMachine: {fileID: 0}
+   m_DstState: {fileID: 228580624183571752}
+   m_Solo: 0
