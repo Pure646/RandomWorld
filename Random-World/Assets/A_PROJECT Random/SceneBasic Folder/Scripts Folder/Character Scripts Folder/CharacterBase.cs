@@ -80,7 +80,7 @@ namespace RandomWorld
 
                 if (animator)
                 {
-                    animator.SetBool("isJump", false);
+                    animator.SetBool("IsJump", false);
                     animator.SetBool("IsFreeFall", false);
                 }
 
@@ -94,9 +94,9 @@ namespace RandomWorld
                 {
                     verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
-                    if (animator)
+                    if(animator)
                     {
-                        animator.SetBool("isJump", true);
+                        animator.SetBool("IsJump", true);
                     }
                 }
 
