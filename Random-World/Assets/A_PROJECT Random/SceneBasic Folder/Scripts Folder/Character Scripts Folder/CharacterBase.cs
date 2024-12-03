@@ -9,8 +9,6 @@ namespace RandomWorld
 {
     public class CharacterBase : MonoBehaviour
     {
-        public bool isRun;
-
         private Animator animator;
 
         [Header("¡å---Character Move---¡å")]
@@ -37,6 +35,9 @@ namespace RandomWorld
         private float verticalVelocity;
         private float terminalVelocity = 53.0f;
 
+        private bool isRun;
+        public float RunSpeed;
+
         private void Awake()
         {
             animator = GetComponent<Animator>();
@@ -45,15 +46,14 @@ namespace RandomWorld
 
         private void Update()
         {
+            Running();
             JumpAndGravity();
             GroundedCheck();
 
             animator.SetFloat("Horizontal", movement.x);
             animator.SetFloat("Vertical", movement.z);
             animator.SetFloat("Magnitude", movement.magnitude);
-
-            isRun = UnityEngine.Input.GetKey(KeyCode.LeftShift);
-            animator.SetFloat("Speed", isRun ? 1 : 0);
+            animator.SetFloat("IsRun", isRun ? 1f : 0f);
         }
 
         private void GroundedCheck()
@@ -69,7 +69,14 @@ namespace RandomWorld
 
         public void Running()
         {
-
+            if(UnityEngine.Input.GetKey(KeyCode.LeftShift))
+            {
+                isRun = true;
+            }
+            else
+            {
+                isRun = false;
+            }
         }
         #region JumpAndGravity
         private void JumpAndGravity()
@@ -133,10 +140,20 @@ namespace RandomWorld
         public void Move(Vector2 input)
         {
             movement = new Vector3(input.x, 0, input.y);
-            Vector3 moveVec = movement * Time.deltaTime * moveSpeed;
-            moveVec.y += verticalVelocity * Time.deltaTime;
+            Vector3 moveVec = movement * Time.deltaTime;
+            if(isRun)
+            {
+                transform.Translate(moveVec * RunSpeed, Space.Self);
 
-            unityCharacterController.Move(moveVec);
+                //unityCharacterController.Move(moveVec * RunSpeed);
+            }
+            else
+            {
+                transform.Translate(moveVec * moveSpeed, Space.Self);
+
+                //unityCharacterController.Move(moveVec * moveSpeed);
+            }
+            moveVec.y += verticalVelocity * Time.deltaTime;
         }
 
         public void Rotate(float inputX)

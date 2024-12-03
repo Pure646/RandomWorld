@@ -15,7 +15,6 @@ namespace RandomWorld
         private Vector2 look;
 
         public System.Action Jump;
-        public System.Action Run;
 
         private void Awake()
         {
@@ -35,11 +34,6 @@ namespace RandomWorld
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Jump?.Invoke();
-            }
-
-            if(Input.GetKey(KeyCode.LeftShift))
-            {
-                Run?.Invoke();
             }
         }
     }

@@ -16,14 +16,10 @@ namespace RandomWorld
 
         private void Start()
         {
-            InputSystem.Instance.Jump += ExecuteJump;
-            InputSystem.Instance.Run += Running;
+            InputSystem.Instance.Jump += OnJump;
         }
-        void Running()
-        {
-            characterBase.Running();
-        }
-        void ExecuteJump()
+
+        void OnJump()
         {
             characterBase.Jump();
         }
