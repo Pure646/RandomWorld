@@ -38,6 +38,15 @@ namespace RandomWorld
         private bool isRun;
         public float RunSpeed;
 
+        public enum WeaponType
+        {
+            None,
+
+            Rifle_1,
+            Rifle_2,
+            Rifle_3,
+        }
+        public WeaponType WeaponData;
         private void Awake()
         {
             animator = GetComponent<Animator>();
@@ -55,7 +64,7 @@ namespace RandomWorld
             animator.SetFloat("Magnitude", movement.magnitude);
             animator.SetFloat("IsRun", isRun ? 1f : 0f);
         }
-
+        #region GroundedCheck
         private void GroundedCheck()
         {
             Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - groundedOffset, transform.position.z);
@@ -66,7 +75,8 @@ namespace RandomWorld
                 animator.SetBool("IsGrounded", isGrounded);
             }
         }
-
+        #endregion
+        #region Running
         public void Running()
         {
             if(UnityEngine.Input.GetKey(KeyCode.LeftShift))
@@ -78,6 +88,7 @@ namespace RandomWorld
                 isRun = false;
             }
         }
+        #endregion
         #region JumpAndGravity
         private void JumpAndGravity()
         {
@@ -139,20 +150,17 @@ namespace RandomWorld
 
         public void Move(Vector2 input)
         {
-            movement = new Vector3(input.x, 0, input.y);
+            movement = (transform.right * input.x) + (transform.forward * input.y);
             Vector3 moveVec = movement * Time.deltaTime;
             if(isRun)
             {
-                transform.Translate(moveVec * RunSpeed, Space.Self);
-
-                //unityCharacterController.Move(moveVec * RunSpeed);
+                unityCharacterController.Move(moveVec * RunSpeed);
             }
             else
             {
-                transform.Translate(moveVec * moveSpeed, Space.Self);
-
-                //unityCharacterController.Move(moveVec * moveSpeed);
+                unityCharacterController.Move(moveVec * moveSpeed);
             }
+
             moveVec.y += verticalVelocity * Time.deltaTime;
         }
 
@@ -165,6 +173,29 @@ namespace RandomWorld
         public void Jump()
         {
             isJump = true;
+        }
+
+        public void EquipWeapon()
+        {
+            if(WeaponData == WeaponType.Rifle_1)
+            {
+                animator.SetInteger("WeaponType", (int)WeaponData);
+                animator.SetTrigger("Holster Trigger");
+            }
+            else if(WeaponData == WeaponType.Rifle_2)
+            {
+                animator.SetInteger("WeaponType", (int)WeaponData);
+                animator.SetTrigger("Holster Trigger");
+            }
+            else if(WeaponData == WeaponType.Rifle_3)
+            {
+                animator.SetInteger("WeaponType", (int)WeaponData);
+                animator.SetTrigger("Holster Trigger");
+            }
+        }
+        public void OnChangeWeaponToBack()
+        {
+            animator.SetTrigger("Equip Trigger");
         }
     }
 }

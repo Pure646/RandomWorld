@@ -17,9 +17,15 @@ namespace RandomWorld
         private void Start()
         {
             InputSystem.Instance.Jump += OnJump;
+            InputSystem.Instance.OnEquipWeapon += CommandEquip;
         }
 
-        void OnJump()
+        private void CommandEquip()
+        {
+            characterBase.EquipWeapon();
+        }
+        
+        private void OnJump()
         {
             characterBase.Jump();
         }
@@ -31,7 +37,7 @@ namespace RandomWorld
 
             Vector2 LookInput = InputSystem.Instance.Looking;
             characterBase.Rotate(LookInput.x);
-
+            
 
         }
     }

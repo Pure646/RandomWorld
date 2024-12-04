@@ -15,6 +15,7 @@ namespace RandomWorld
         private Vector2 look;
 
         public System.Action Jump;
+        public System.Action OnEquipWeapon;
 
         private void Awake()
         {
@@ -34,6 +35,21 @@ namespace RandomWorld
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Jump?.Invoke();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                OnEquipWeapon?.Invoke();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                OnEquipWeapon?.Invoke();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                OnEquipWeapon?.Invoke();
             }
         }
     }
