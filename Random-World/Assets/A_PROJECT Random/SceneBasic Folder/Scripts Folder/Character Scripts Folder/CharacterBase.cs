@@ -11,10 +11,12 @@ namespace RandomWorld
     {
         private Animator animator;
 
-        [Header("¡å---Character Move---¡å")]
         private Vector3 movement;
+        [Header("¡å---Character Move---¡å")]
         public float moveSpeed = 3f;
 
+        private float horizontalBlend;
+        private float verticalBlend;
         private float SpinRotationY = 0f;
 
         private UnityEngine.CharacterController unityCharacterController;
@@ -38,6 +40,17 @@ namespace RandomWorld
         private bool isRun;
         public float RunSpeed;
 
+        [Header("¡å---UsedWeapon Base---¡å")]
+        public GameObject OneMainWeaponStand;
+        public GameObject TwoMainWeaponStand;
+        public GameObject OneWeapon;
+        public GameObject TwoWeapon;
+
+        private bool OneMainWeapon;
+        private bool TwoMainWeapon;
+        private bool EquipWeapon;
+        private bool ChangeWeapon;
+
         private void Awake()
         {
             animator = GetComponent<Animator>();
@@ -49,9 +62,11 @@ namespace RandomWorld
             Running();
             JumpAndGravity();
             GroundedCheck();
+            UsedWeapon();
+            OnWeapon();
 
-            animator.SetFloat("Horizontal", movement.x);
-            animator.SetFloat("Vertical", movement.z);
+            animator.SetFloat("Horizontal", horizontalBlend);
+            animator.SetFloat("Vertical", verticalBlend);
             animator.SetFloat("Magnitude", movement.magnitude);
             animator.SetFloat("IsRun", isRun ? 1f : 0f);
         }
@@ -139,9 +154,12 @@ namespace RandomWorld
         }
         #endregion
 
+        #region Move
         public void Move(Vector2 input)
         {
             movement = (transform.right * input.x) + (transform.forward * input.y);
+            horizontalBlend = Mathf.Lerp(horizontalBlend, input.x, 10 * Time.deltaTime);
+            verticalBlend = Mathf.Lerp(verticalBlend, input.y, 10 * Time.deltaTime);
 
             Vector3 moveVec = movement * Time.deltaTime;
             if(isRun)
@@ -155,7 +173,54 @@ namespace RandomWorld
 
             moveVec.y += verticalVelocity * Time.deltaTime;
         }
+        #endregion
+ 
+        public void OnWeapon()
+        {
+            if(UnityEngine.Input.GetKeyDown(KeyCode.Alpha1) && OneMainWeapon == true)
+            {
+                if(EquipWeapon == false)
+                {
+                    EquipWeapon = true;
+                    animator.SetTrigger("Equip Trigger");
+                }
+                if(EquipWeapon == true)
+                {
+                    EquipWeapon = false;
+                    animator.SetTrigger("Holster Trigger");
+                }
+            }
+            if(UnityEngine.Input.GetKeyDown(KeyCode.Alpha2) && (TwoMainWeapon == true && EquipWeapon == false))
+            {
 
+            }
+            
+        }
+        public void UsedWeapon()
+        {
+            if (OneWeapon == null || TwoWeapon == null)
+                return;
+
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha8))
+            {
+                GameObject newWeapon = Instantiate(OneWeapon, OneMainWeaponStand.transform);
+                newWeapon.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(-24f, -93f, -11.195f));
+                newWeapon.SetActive(true);
+                OneMainWeapon = true;
+            }
+            if(UnityEngine.Input.GetKeyDown(KeyCode.Alpha9))
+            {
+                GameObject newWeapon = Instantiate(TwoWeapon, TwoMainWeaponStand.transform);
+                newWeapon.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(-26.313f, -97.603f, 0f));
+                newWeapon.SetActive(true);
+                TwoMainWeapon = true;
+            }
+            if(UnityEngine.Input.GetKeyDown(KeyCode.T))
+            {
+                OneMainWeapon = false;
+                TwoMainWeapon = false;
+            }
+        }
         public void Rotate(float inputX)
         {
             SpinRotationY += inputX;
