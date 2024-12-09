@@ -38,15 +38,6 @@ namespace RandomWorld
         private bool isRun;
         public float RunSpeed;
 
-        public enum WeaponType
-        {
-            None,
-
-            Rifle_1,
-            Rifle_2,
-            Rifle_3,
-        }
-        public WeaponType WeaponData;
         private void Awake()
         {
             animator = GetComponent<Animator>();
@@ -151,6 +142,7 @@ namespace RandomWorld
         public void Move(Vector2 input)
         {
             movement = (transform.right * input.x) + (transform.forward * input.y);
+
             Vector3 moveVec = movement * Time.deltaTime;
             if(isRun)
             {
@@ -173,25 +165,6 @@ namespace RandomWorld
         public void Jump()
         {
             isJump = true;
-        }
-
-        public void EquipWeapon()
-        {
-            if(WeaponData == WeaponType.Rifle_1)
-            {
-                animator.SetInteger("WeaponType", (int)WeaponData);
-                animator.SetTrigger("Holster Trigger");
-            }
-            else if(WeaponData == WeaponType.Rifle_2)
-            {
-                animator.SetInteger("WeaponType", (int)WeaponData);
-                animator.SetTrigger("Holster Trigger");
-            }
-            else if(WeaponData == WeaponType.Rifle_3)
-            {
-                animator.SetInteger("WeaponType", (int)WeaponData);
-                animator.SetTrigger("Holster Trigger");
-            }
         }
         public void OnChangeWeaponToBack()
         {

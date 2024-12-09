@@ -22,7 +22,7 @@ namespace RandomWorld
 
         private void CommandEquip()
         {
-            characterBase.EquipWeapon();
+            //characterBase.EquipWeapon();
         }
         
         private void OnJump()

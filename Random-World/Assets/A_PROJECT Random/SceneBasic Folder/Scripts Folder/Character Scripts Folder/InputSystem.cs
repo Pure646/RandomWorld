@@ -51,6 +51,10 @@ namespace RandomWorld
             {
                 OnEquipWeapon?.Invoke();
             }
+            if(Input.GetKeyDown(KeyCode.T))
+            {
+                OnEquipWeapon?.Invoke();
+            }
         }
     }
 }
