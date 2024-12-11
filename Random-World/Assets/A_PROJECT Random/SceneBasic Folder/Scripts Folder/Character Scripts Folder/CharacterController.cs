@@ -17,12 +17,18 @@ namespace RandomWorld
         private void Start()
         {
             InputSystem.Instance.Jump += OnJump;
+
             InputSystem.Instance.OnEquipWeapon += CommandEquip;
+            InputSystem.Instance.OnHolsterWeapon += CommandHolster;
+        }
+        private void CommandHolster()
+        {
+            characterBase.HolsterWeapon(null);
         }
 
-        private void CommandEquip()
+        private void CommandEquip(int index)
         {
-            //characterBase.EquipWeapon();
+            characterBase.EquipWeapon(index);
         }
         
         private void OnJump()

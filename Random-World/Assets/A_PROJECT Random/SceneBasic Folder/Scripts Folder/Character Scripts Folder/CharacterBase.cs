@@ -40,21 +40,50 @@ namespace RandomWorld
         private bool isRun;
         public float RunSpeed;
 
-        [Header("▼---UsedWeapon Base---▼")]
-        public GameObject OneMainWeaponStand;
-        public GameObject TwoMainWeaponStand;
-        public GameObject OneWeapon;
-        public GameObject TwoWeapon;
+        [Header("▼---WeaponBase---▼")]
+        [SerializeField] private WeaponBase weaponPrefab_1;
+        [SerializeField] private WeaponBase weaponPrefab_2;
+        [SerializeField] private WeaponBase weaponPrefab_3;
 
-        private bool OneMainWeapon;
-        private bool TwoMainWeapon;
-        private bool EquipWeapon;
-        private bool ChangeWeapon;
+        [SerializeField] private WeaponBase primaryWeapon;
+        [SerializeField] private WeaponBase secondaryWeapon;
+        [SerializeField] private WeaponBase thirdWeapon;
+
+        [SerializeField] private Transform primarySocket;
+        [SerializeField] private Transform secondarySocket;
+        [SerializeField] private Transform thirdSocket;
+
+        private enum WeaponName
+        {
+            None,
+
+            AK12        = 1,
+            AK74        = 2,
+            G3A4        = 3,
+            TAR21       = 4,
+
+            Glock_17    = 31,
+            Tec_9       = 32,
+            Deagle      = 33,
+        }
+
+        private int socketIndex = -1;
+        private WeaponBase currentWeapon;
+        private WeaponBase weaponToEquip;
+        private Transform rightHandTransform;
 
         private void Awake()
         {
             animator = GetComponent<Animator>();
             unityCharacterController = GetComponent<UnityEngine.CharacterController>();
+            rightHandTransform = animator.GetBoneTransform(HumanBodyBones.RightHand);
+        }
+
+        private void Start()
+        {
+            primaryWeapon = Instantiate(weaponPrefab_1, primarySocket);
+            secondaryWeapon = Instantiate(weaponPrefab_2, secondarySocket);
+            thirdWeapon = Instantiate(weaponPrefab_3, thirdSocket);
         }
 
         private void Update()
@@ -62,15 +91,14 @@ namespace RandomWorld
             Running();
             JumpAndGravity();
             GroundedCheck();
-            UsedWeapon();
-            OnWeapon();
 
             animator.SetFloat("Horizontal", horizontalBlend);
             animator.SetFloat("Vertical", verticalBlend);
             animator.SetFloat("Magnitude", movement.magnitude);
             animator.SetFloat("IsRun", isRun ? 1f : 0f);
         }
-        #region GroundedCheck
+
+#region GroundedCheck
         private void GroundedCheck()
         {
             Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - groundedOffset, transform.position.z);
@@ -82,20 +110,7 @@ namespace RandomWorld
             }
         }
         #endregion
-        #region Running
-        public void Running()
-        {
-            if(UnityEngine.Input.GetKey(KeyCode.LeftShift))
-            {
-                isRun = true;
-            }
-            else
-            {
-                isRun = false;
-            }
-        }
-        #endregion
-        #region JumpAndGravity
+#region JumpAndGravity
         private void JumpAndGravity()
         {
             if (isGrounded)
@@ -153,8 +168,27 @@ namespace RandomWorld
             }
         }
         #endregion
+#region isJump?
+        public void Jump()
+        {
+            isJump = true;
+        }
+        #endregion
 
-        #region Move
+#region isrunnig
+        public void Running()
+        {
+            if (UnityEngine.Input.GetKey(KeyCode.LeftShift))
+            {
+                isRun = true;
+            }
+            else
+            {
+                isRun = false;
+            }
+        }
+        #endregion
+#region Move
         public void Move(Vector2 input)
         {
             movement = (transform.right * input.x) + (transform.forward * input.y);
@@ -174,66 +208,112 @@ namespace RandomWorld
             moveVec.y += verticalVelocity * Time.deltaTime;
         }
         #endregion
- 
-        public void OnWeapon()
-        {
-            if(UnityEngine.Input.GetKeyDown(KeyCode.Alpha1) && OneMainWeapon == true)
-            {
-                if(EquipWeapon == false)
-                {
-                    EquipWeapon = true;
-                    animator.SetTrigger("Equip Trigger");
-                }
-                if(EquipWeapon == true)
-                {
-                    EquipWeapon = false;
-                    animator.SetTrigger("Holster Trigger");
-                }
-            }
-            if(UnityEngine.Input.GetKeyDown(KeyCode.Alpha2) && (TwoMainWeapon == true && EquipWeapon == false))
-            {
-
-            }
-            
-        }
-        public void UsedWeapon()
-        {
-            if (OneWeapon == null || TwoWeapon == null)
-                return;
-
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha8))
-            {
-                GameObject newWeapon = Instantiate(OneWeapon, OneMainWeaponStand.transform);
-                newWeapon.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(-24f, -93f, -11.195f));
-                newWeapon.SetActive(true);
-                OneMainWeapon = true;
-            }
-            if(UnityEngine.Input.GetKeyDown(KeyCode.Alpha9))
-            {
-                GameObject newWeapon = Instantiate(TwoWeapon, TwoMainWeaponStand.transform);
-                newWeapon.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(-26.313f, -97.603f, 0f));
-                newWeapon.SetActive(true);
-                TwoMainWeapon = true;
-            }
-            if(UnityEngine.Input.GetKeyDown(KeyCode.T))
-            {
-                OneMainWeapon = false;
-                TwoMainWeapon = false;
-            }
-        }
+#region Rotate
         public void Rotate(float inputX)
         {
             SpinRotationY += inputX;
             transform.rotation = Quaternion.Euler(0, SpinRotationY, 0);
         }
-
-        public void Jump()
+        #endregion
+        public void WeaponPositionRotation()
         {
-            isJump = true;
+            //if(currentWeapon == WeaponName.AK12)
         }
         public void OnChangeWeaponToBack()
         {
             animator.SetTrigger("Equip Trigger");
+        }
+
+        private Transform holsterTargetSocket;
+        private bool isEquipmentChanging = false; // 장비를 바꾸는 중일 때, TRUE (:장비를 꺼내거나 넣을 때)
+
+        public void HolsterWeapon(Transform targetSocket, WeaponBase nextWeapon = null)
+        {
+            if (isEquipmentChanging)
+                return;
+
+            holsterTargetSocket = targetSocket;
+            isEquipmentChanging = true;
+            animator.SetTrigger("Holster Trigger");
+        }
+
+        public void HolsterComplete()
+        {
+            isEquipmentChanging = false;
+
+            currentWeapon.transform.SetParent(holsterTargetSocket);
+            //currentWeapon.transform.SetLocalPositionAndRotation(new Vector3(-0.013f, 0.007f, 0.022f), new Quaternion(-0.15f, -0.67f, -0.14f, 0.71f));
+
+            currentWeapon = null;
+            if (weaponToEquip != null)
+            {                
+                EquipWeapon(weaponToEquip);
+            }
+        }
+
+        public void EquipWeapon(WeaponBase weapon)
+        {
+            if (isEquipmentChanging)
+                return;
+
+            isEquipmentChanging = true;
+            currentWeapon = weapon;
+            animator.SetTrigger("Equip Trigger");
+        }
+
+        public void EquipComplete()
+        {
+            isEquipmentChanging = false;
+
+            currentWeapon = weaponToEquip;
+            currentWeapon.transform.SetParent(rightHandTransform);
+            //currentWeapon.transform.localPosition;
+            //currentWeapon.transform.localRotation;
+            //currentWeapon.transform.SetLocalPositionAndRotation();
+
+            weaponToEquip = null;
+        }
+
+        public void EquipWeapon(int index)
+        {
+            if (isEquipmentChanging)
+                return;
+
+            if (index == 0)
+            {
+                weaponToEquip = primaryWeapon;
+            }
+            else if (index == 1)
+            {
+                weaponToEquip = secondaryWeapon;
+            }
+            else if (index == 2)
+            {
+                weaponToEquip = thirdWeapon;
+            }
+
+            if (currentWeapon != null)
+            {
+                Transform targetSocket = null;
+                if (currentWeapon == primaryWeapon)
+                {
+                    targetSocket = primarySocket;
+                }
+                else if (currentWeapon == secondaryWeapon)
+                {
+                    targetSocket = secondarySocket;
+                }
+                else if (currentWeapon == thirdWeapon)
+                {
+                    targetSocket = thirdSocket;
+                }
+
+                HolsterWeapon(targetSocket, weaponToEquip);
+            }
+            else
+            {
+                EquipWeapon(weaponToEquip);
+            }
         }
     }
 }
