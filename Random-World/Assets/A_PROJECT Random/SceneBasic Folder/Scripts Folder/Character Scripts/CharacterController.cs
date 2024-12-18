@@ -9,6 +9,8 @@ namespace RandomWorld
     {
         public CharacterBase characterBase;
 
+        public IngameUI ingameUI;
+        public CharacterHP characterHP;
         private void Awake()
         {
             characterBase = GetComponent<CharacterBase>();
@@ -43,8 +45,8 @@ namespace RandomWorld
 
             Vector2 LookInput = InputSystem.Instance.Looking;
             characterBase.Rotate(LookInput.x);
-            
 
+            ingameUI.SetHP(characterBase.CurrentHP, characterBase.characterData.MaxHP);
         }
     }
 }

@@ -53,6 +53,11 @@ namespace RandomWorld
         [SerializeField] private Transform secondarySocket;
         [SerializeField] private Transform thirdSocket;
 
+        public CharacterHP characterData;
+
+        public float CurrentHP => currentHP;
+        private float currentHP;
+
         private enum WeaponName
         {
             None,
@@ -84,6 +89,8 @@ namespace RandomWorld
             primaryWeapon = Instantiate(weaponPrefab_1, primarySocket);
             secondaryWeapon = Instantiate(weaponPrefab_2, secondarySocket);
             thirdWeapon = Instantiate(weaponPrefab_3, thirdSocket);
+
+            currentHP = characterData.MaxHP;
         }
 
         private void Update()
