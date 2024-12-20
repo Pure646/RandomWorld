@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1670146458222849046
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1988979986887784765}
-  m_Layer: 0
-  m_Name: Secondary Weapon
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1988979986887784765
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1670146458222849046}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3496329975337556533}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3108209463324868412
 GameObject:
   m_ObjectHideFlags: 0
@@ -55,44 +24,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3108209463324868412}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.19420342, y: -0.7022353, z: -0.21604992, w: 0.6499793}
   m_LocalPosition: {x: 0.05, y: -0.25, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4052413750803703170}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &3287751759849864066
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8121919366140116144}
-  m_Layer: 0
-  m_Name: Main Weapon
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8121919366140116144
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3287751759849864066}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3496329975337556533}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -33.772, y: -94.257, z: -0.559}
 --- !u!1 &6061720792474652369
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,13 +55,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6061720792474652369}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.22085443, y: -0.61575675, z: -0.061054204, w: 0.7538828}
   m_LocalPosition: {x: 0.05, y: -0.25, z: 0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4052413750803703170}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -24.091, y: -80.916, z: 11.367}
 --- !u!1 &7749115103873895636
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,7 +72,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3496329975337556533}
   m_Layer: 0
-  m_Name: Weapon Base
+  m_Name: Weapon Holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,9 +90,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8121919366140116144}
-  - {fileID: 1988979986887784765}
+  m_Children: []
   m_Father: {fileID: 4052413750803702856}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8421969015152251565
@@ -181,13 +117,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8421969015152251565}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0546, y: -0, z: -0.1991}
+  m_LocalRotation: {x: -0.16229753, y: -0.6562031, z: -0.14421168, w: 0.72267574}
+  m_LocalPosition: {x: 0.027, y: 0.077, z: -0.203}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4052413750803702788}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -25.077, y: -84.544, z: 0.289}
 --- !u!1001 &4052413750804102786
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -238,7 +174,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400326, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.011
       objectReference: {fileID: 0}
     - target: {fileID: 400326, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
       propertyPath: m_LocalRotation.w
@@ -446,14 +382,16 @@ MonoBehaviour:
     m_Bits: 1
   RunSpeed: 3
   weaponPrefab_1: {fileID: 9218878801827731191, guid: 990528ce02b984d4fb9e9ebe7843d0cb, type: 3}
-  weaponPrefab_2: {fileID: 505918247187642342, guid: d54c7ab14201dd644a9f69f36a64e374, type: 3}
-  weaponPrefab_3: {fileID: 8867114033285482214, guid: 1611c2a9863eb574e81b9a39fc565bae, type: 3}
+  weaponPrefab_2: {fileID: 5757326757150240921, guid: 671ebee17000ed84bb99eefe33818d5c, type: 3}
+  weaponPrefab_3: {fileID: 2537839151330050106, guid: d54c7ab14201dd644a9f69f36a64e374, type: 3}
   primaryWeapon: {fileID: 0}
   secondaryWeapon: {fileID: 0}
   thirdWeapon: {fileID: 0}
   primarySocket: {fileID: 4842219560224607568}
   secondarySocket: {fileID: 1787164882458169081}
   thirdSocket: {fileID: 7790442196092928213}
+  weaponHolder: {fileID: 3496329975337556533}
+  characterData: {fileID: 0}
 --- !u!114 &4340818093192504247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -467,6 +405,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterBase: {fileID: 0}
+  ingameUI: {fileID: 0}
+  characterHP: {fileID: 11400000, guid: d4fb7829f6d9360439ecd34199fa5314, type: 2}
 --- !u!143 &5213855959547881214
 CharacterController:
   m_ObjectHideFlags: 0

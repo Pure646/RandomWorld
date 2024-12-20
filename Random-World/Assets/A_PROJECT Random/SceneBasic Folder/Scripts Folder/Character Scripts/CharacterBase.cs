@@ -52,30 +52,19 @@ namespace RandomWorld
         [SerializeField] private Transform primarySocket;
         [SerializeField] private Transform secondarySocket;
         [SerializeField] private Transform thirdSocket;
+        [SerializeField] private Transform weaponHolder;
 
         public CharacterHP characterData;
 
         public float CurrentHP => currentHP;
         private float currentHP;
-
-        private enum WeaponName
-        {
-            None,
-
-            AK12        = 1,
-            AK74        = 2,
-            G3A4        = 3,
-            TAR21       = 4,
-
-            Glock_17    = 31,
-            Tec_9       = 32,
-            Deagle      = 33,
-        }
-
+       
         private int socketIndex = -1;
         private WeaponBase currentWeapon;
         private WeaponBase weaponToEquip;
+
         private Transform rightHandTransform;
+        
 
         private void Awake()
         {
@@ -87,17 +76,18 @@ namespace RandomWorld
         private void Start()
         {
             primaryWeapon = Instantiate(weaponPrefab_1, primarySocket);
-            secondaryWeapon = Instantiate(weaponPrefab_2, secondarySocket);
-            thirdWeapon = Instantiate(weaponPrefab_3, thirdSocket);
-
-            currentHP = characterData.MaxHP;
+            primaryWeapon.transform.SetLocalPositionAndRotation(
+                    primaryWeapon.OffsetPosition,
+                    Quaternion.Euler(primaryWeapon.OffsetRotation));
+            //currentHP = characterData.MaxHP;
         }
 
         private void Update()
         {
-            Running();
-            JumpAndGravity();
+            //Running();
+            //JumpAndGravity();
             GroundedCheck();
+            //WeaponPositionRotation();
 
             animator.SetFloat("Horizontal", horizontalBlend);
             animator.SetFloat("Vertical", verticalBlend);
@@ -117,84 +107,84 @@ namespace RandomWorld
             }
         }
         #endregion
-#region JumpAndGravity
-        private void JumpAndGravity()
-        {
-            if (isGrounded)
-            {
-                fallTimeoutDelta = fallTimeout;
+//#region JumpAndGravity
+//        private void JumpAndGravity()
+//        {
+//            if (isGrounded)
+//            {
+//                fallTimeoutDelta = fallTimeout;
 
-                if (animator)
-                {
-                    animator.SetBool("IsJump", false);
-                    animator.SetBool("IsFreeFall", false);
-                }
+//                if (animator)
+//                {
+//                    animator.SetBool("IsJump", false);
+//                    animator.SetBool("IsFreeFall", false);
+//                }
 
-                if (verticalVelocity < 0.0f)
-                {
-                    verticalVelocity = -2f;
-                }
+//                if (verticalVelocity < 0.0f)
+//                {
+//                    verticalVelocity = -2f;
+//                }
 
-                // Jump
-                if (isJump && jumpTimeoutDelta <= 0.0f)
-                {
-                    verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+//                // Jump
+//                if (isJump && jumpTimeoutDelta <= 0.0f)
+//                {
+//                    verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
-                    if(animator)
-                    {
-                        animator.SetBool("IsJump", true);
-                    }
-                }
+//                    if(animator)
+//                    {
+//                        animator.SetBool("IsJump", true);
+//                    }
+//                }
 
-                if (jumpTimeoutDelta >= 0.0f)
-                {
-                    jumpTimeoutDelta -= Time.deltaTime;
-                }
-            }
-            else
-            {
-                jumpTimeoutDelta = jumpTimeout;
-                if (fallTimeoutDelta >= 0.0f)
-                {
-                    fallTimeoutDelta -= Time.deltaTime;
-                }
-                else
-                {
-                    if (animator)
-                    {
-                        animator.SetBool("IsFreeFall", true);
-                    }
-                }
+//                if (jumpTimeoutDelta >= 0.0f)
+//                {
+//                    jumpTimeoutDelta -= Time.deltaTime;
+//                }
+//            }
+//            else
+//            {
+//                jumpTimeoutDelta = jumpTimeout;
+//                if (fallTimeoutDelta >= 0.0f)
+//                {
+//                    fallTimeoutDelta -= Time.deltaTime;
+//                }
+//                else
+//                {
+//                    if (animator)
+//                    {
+//                        animator.SetBool("IsFreeFall", true);
+//                    }
+//                }
 
-                isJump = false;
-            }
+//                isJump = false;
+//            }
 
-            if (verticalVelocity < terminalVelocity)
-            {
-                verticalVelocity += gravity * Time.deltaTime;
-            }
-        }
-        #endregion
-#region isJump?
-        public void Jump()
-        {
-            isJump = true;
-        }
-        #endregion
+//            if (verticalVelocity < terminalVelocity)
+//            {
+//                verticalVelocity += gravity * Time.deltaTime;
+//            }
+//        }
+//        #endregion
+        //#region isJump?
+        //public void Jump()
+        //{
+        //    isJump = true;
+        //}
+        //#endregion
 
-#region isrunnig
-        public void Running()
-        {
-            if (UnityEngine.Input.GetKey(KeyCode.LeftShift))
-            {
-                isRun = true;
-            }
-            else
-            {
-                isRun = false;
-            }
-        }
-        #endregion
+        //#region isrunnig
+        //public void Running()
+        //{
+        //    if (UnityEngine.Input.GetKey(KeyCode.LeftShift))
+        //    {
+        //        isRun = true;
+        //    }
+        //    else
+        //    {
+        //        isRun = false;
+        //    }
+        //}
+        //#endregion
 #region Move
         public void Move(Vector2 input)
         {
@@ -222,10 +212,39 @@ namespace RandomWorld
             transform.rotation = Quaternion.Euler(0, SpinRotationY, 0);
         }
         #endregion
-        public void WeaponPositionRotation()
-        {
-            //if(currentWeapon == WeaponName.AK12)
-        }
+        //public void WeaponPositionRotation()
+        //{
+        //    if (weaponPrefab_1 != null && primaryWeapon != null)
+        //    {
+        //        primaryWeapon = Instantiate(weaponPrefab_1, primarySocket);
+        //    }
+        //    else
+        //    {
+        //        primaryWeapon.transform.SetLocalPositionAndRotation(
+        //            primaryWeapon.OffsetPosition,
+        //            Quaternion.Euler(primaryWeapon.OffsetRotation));
+        //    }
+        //    if (weaponPrefab_2 != null )
+        //    {
+        //        secondaryWeapon = Instantiate(weaponPrefab_2, secondarySocket);
+        //    }
+        //    else
+        //    {
+        //        secondaryWeapon.transform.SetLocalPositionAndRotation(
+        //            secondaryWeapon.OffsetPosition,
+        //            Quaternion.Euler(secondaryWeapon.OffsetRotation));
+        //    }
+        //    if (weaponPrefab_3 != null)
+        //    {
+        //        thirdWeapon = Instantiate(weaponPrefab_3, thirdSocket);
+        //    }
+        //    else
+        //    {
+        //        thirdWeapon.transform.SetLocalPositionAndRotation(
+        //            thirdWeapon.OffsetPosition,
+        //            Quaternion.Euler(thirdWeapon.OffsetRotation));
+        //    }
+        //}
         public void OnChangeWeaponToBack()
         {
             animator.SetTrigger("Equip Trigger");
@@ -249,7 +268,7 @@ namespace RandomWorld
             isEquipmentChanging = false;
 
             currentWeapon.transform.SetParent(holsterTargetSocket);
-            //currentWeapon.transform.SetLocalPositionAndRotation(new Vector3(-0.013f, 0.007f, 0.022f), new Quaternion(-0.15f, -0.67f, -0.14f, 0.71f));
+            currentWeapon.transform.SetLocalPositionAndRotation(currentWeapon.OffsetPosition, Quaternion.Euler(currentWeapon.OffsetRotation));
 
             currentWeapon = null;
             if (weaponToEquip != null)
@@ -273,10 +292,9 @@ namespace RandomWorld
             isEquipmentChanging = false;
 
             currentWeapon = weaponToEquip;
-            currentWeapon.transform.SetParent(rightHandTransform);
-            //currentWeapon.transform.localPosition;
-            //currentWeapon.transform.localRotation;
-            //currentWeapon.transform.SetLocalPositionAndRotation();
+            currentWeapon.transform.SetParent(weaponHolder);
+            currentWeapon.transform.SetLocalPositionAndRotation(
+                currentWeapon.HandOffsetPosition, Quaternion.Euler(currentWeapon.HandOffsetRotation));
 
             weaponToEquip = null;
         }

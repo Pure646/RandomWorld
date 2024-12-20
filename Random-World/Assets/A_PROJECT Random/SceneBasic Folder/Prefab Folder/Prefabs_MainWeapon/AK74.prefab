@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 5d19943c5e0025541b03144af795e571, type: 3}
       propertyPath: m_Name
-      value: AK74 1
+      value: AK74
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5d19943c5e0025541b03144af795e571, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5d19943c5e0025541b03144af795e571, type: 3}
       propertyPath: m_LocalPosition.y
@@ -34,11 +34,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5d19943c5e0025541b03144af795e571, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5d19943c5e0025541b03144af795e571, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5d19943c5e0025541b03144af795e571, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -55,5 +55,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 5d19943c5e0025541b03144af795e571, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5757326757150240921}
   m_SourcePrefab: {fileID: 100100000, guid: 5d19943c5e0025541b03144af795e571, type: 3}
+--- !u!1 &4811073723452849725 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 5d19943c5e0025541b03144af795e571, type: 3}
+  m_PrefabInstance: {fileID: 4811073723452815517}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5757326757150240921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4811073723452849725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0706531ff0c9de949891a3a6cd955ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <OffsetPosition>k__BackingField: {x: 0, y: 0, z: 0}
+  <OffsetRotation>k__BackingField: {x: 0, y: 0, z: 0}
+  weaponType: 0

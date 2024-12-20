@@ -14,15 +14,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 6c1c58b7673e69146b36d3683f6ee643, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 6c1c58b7673e69146b36d3683f6ee643, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.03577553
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 6c1c58b7673e69146b36d3683f6ee643, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.1826774
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 6c1c58b7673e69146b36d3683f6ee643, type: 3}
       propertyPath: m_LocalRotation.w
@@ -34,11 +34,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 6c1c58b7673e69146b36d3683f6ee643, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 6c1c58b7673e69146b36d3683f6ee643, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 6c1c58b7673e69146b36d3683f6ee643, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -58,14 +58,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 100002, guid: 6c1c58b7673e69146b36d3683f6ee643, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 505918247187642342}
+      addedObject: {fileID: 2537839151330050106}
   m_SourcePrefab: {fileID: 100100000, guid: 6c1c58b7673e69146b36d3683f6ee643, type: 3}
 --- !u!1 &6847574372658074278 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100002, guid: 6c1c58b7673e69146b36d3683f6ee643, type: 3}
   m_PrefabInstance: {fileID: 6847574372658172932}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &505918247187642342
+--- !u!114 &2537839151330050106
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -77,3 +77,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0706531ff0c9de949891a3a6cd955ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponType: 3

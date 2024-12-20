@@ -18,7 +18,7 @@ namespace RandomWorld
 
         private void Start()
         {
-            InputSystem.Instance.Jump += OnJump;
+            //InputSystem.Instance.Jump += OnJump;
 
             InputSystem.Instance.OnEquipWeapon += CommandEquip;
             InputSystem.Instance.OnHolsterWeapon += CommandHolster;
@@ -33,10 +33,10 @@ namespace RandomWorld
             characterBase.EquipWeapon(index);
         }
         
-        private void OnJump()
-        {
-            characterBase.Jump();
-        }
+        //private void OnJump()
+        //{
+        //    characterBase.Jump();
+        //}
 
         private void Update()
         {
@@ -46,7 +46,7 @@ namespace RandomWorld
             Vector2 LookInput = InputSystem.Instance.Looking;
             characterBase.Rotate(LookInput.x);
 
-            ingameUI.SetHP(characterBase.CurrentHP, characterBase.characterData.MaxHP);
+            //ingameUI.SetHP(characterBase.CurrentHP, characterBase.characterData.MaxHP);
         }
     }
 }

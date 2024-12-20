@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f4b06daa55c2ab8449e10c4566652eb1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f4b06daa55c2ab8449e10c4566652eb1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -34,11 +34,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f4b06daa55c2ab8449e10c4566652eb1, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f4b06daa55c2ab8449e10c4566652eb1, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f4b06daa55c2ab8449e10c4566652eb1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -77,3 +77,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0706531ff0c9de949891a3a6cd955ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <OffsetPosition>k__BackingField: {x: 0, y: 0, z: 0}
+  <OffsetRotation>k__BackingField: {x: 3.9233434, y: 7.8639045, z: 1.585373}
+  <HandOffsetPosition>k__BackingField: {x: -0.265, y: 0.083, z: 0.044}
+  <HandOffsetRotation>k__BackingField: {x: 10.115159, y: 93.26583, z: 50.378883}
+  weaponType: 0
