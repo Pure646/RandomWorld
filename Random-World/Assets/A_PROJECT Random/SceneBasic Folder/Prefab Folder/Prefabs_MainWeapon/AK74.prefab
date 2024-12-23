@@ -79,4 +79,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <OffsetPosition>k__BackingField: {x: 0, y: 0, z: 0}
   <OffsetRotation>k__BackingField: {x: 0, y: 0, z: 0}
-  weaponType: 0
+  <HandOffsetPosition>k__BackingField: {x: 0, y: 0, z: 0}
+  <HandOffsetRotation>k__BackingField: {x: 0, y: 0, z: 0}
+  weaponType: 2

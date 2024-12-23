@@ -17,6 +17,7 @@ namespace RandomWorld
         public System.Action Jump;
         public System.Action<int> OnEquipWeapon;
         public System.Action OnHolsterWeapon;
+        public System.Action ReloadWeapon;
 
         private void Awake()
         {
@@ -56,6 +57,10 @@ namespace RandomWorld
             if(Input.GetKeyDown(KeyCode.T))
             {
                 OnHolsterWeapon?.Invoke();
+            }
+            if(Input.GetKeyDown(KeyCode.R))
+            {
+                ReloadWeapon?.Invoke();
             }
         }
     }

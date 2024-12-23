@@ -68,6 +68,7 @@ namespace RandomWorld
 
         private void Awake()
         {
+            
             animator = GetComponent<Animator>();
             unityCharacterController = GetComponent<UnityEngine.CharacterController>();
             rightHandTransform = animator.GetBoneTransform(HumanBodyBones.RightHand);
@@ -75,6 +76,8 @@ namespace RandomWorld
 
         private void Start()
         {
+            InputSystem.Instance.ReloadWeapon += ReloadWeapon;
+
             primaryWeapon = Instantiate(weaponPrefab_1, primarySocket);
             primaryWeapon.transform.SetLocalPositionAndRotation(
                     primaryWeapon.OffsetPosition,
@@ -134,10 +137,22 @@ namespace RandomWorld
         }
         #endregion
        
-        
 
         private Transform holsterTargetSocket;
         private bool isEquipmentChanging = false; // 장비를 바꾸는 중일 때, TRUE (:장비를 꺼내거나 넣을 때)
+
+        //public void AmingPoint()
+        //{
+        //    if (true)
+        //    {
+        //        transform.position
+        //    }
+        //}
+
+        public void ReloadWeapon()
+        {
+            animator.SetTrigger("Reload Trigger");
+        }
 
         public void HolsterWeapon(Transform targetSocket, WeaponBase nextWeapon = null)
         {
@@ -155,6 +170,7 @@ namespace RandomWorld
 
             currentWeapon.transform.SetParent(holsterTargetSocket);
             currentWeapon.transform.SetLocalPositionAndRotation(currentWeapon.OffsetPosition, Quaternion.Euler(currentWeapon.OffsetRotation));
+            animator.SetFloat("Equip Blend", 0f);
 
             currentWeapon = null;
             if (weaponToEquip != null)
@@ -162,13 +178,7 @@ namespace RandomWorld
                 EquipWeapon(weaponToEquip);
             }
         }
-        public void EquippedAction()
-        {
-            if(currentWeapon != null)
-            {
-
-            }
-        }
+        
 
         public void EquipWeapon(WeaponBase weapon)
         {
@@ -178,6 +188,7 @@ namespace RandomWorld
             isEquipmentChanging = true;
             currentWeapon = weapon;
             animator.SetTrigger("Equip Trigger");
+            animator.SetFloat("Equip Blend", 1f);
         }
 
         public void EquipComplete()
