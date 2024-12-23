@@ -87,7 +87,6 @@ namespace RandomWorld
             //Running();
             //JumpAndGravity();
             GroundedCheck();
-            //WeaponPositionRotation();
 
             animator.SetFloat("Horizontal", horizontalBlend);
             animator.SetFloat("Vertical", verticalBlend);
@@ -107,84 +106,6 @@ namespace RandomWorld
             }
         }
         #endregion
-//#region JumpAndGravity
-//        private void JumpAndGravity()
-//        {
-//            if (isGrounded)
-//            {
-//                fallTimeoutDelta = fallTimeout;
-
-//                if (animator)
-//                {
-//                    animator.SetBool("IsJump", false);
-//                    animator.SetBool("IsFreeFall", false);
-//                }
-
-//                if (verticalVelocity < 0.0f)
-//                {
-//                    verticalVelocity = -2f;
-//                }
-
-//                // Jump
-//                if (isJump && jumpTimeoutDelta <= 0.0f)
-//                {
-//                    verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
-
-//                    if(animator)
-//                    {
-//                        animator.SetBool("IsJump", true);
-//                    }
-//                }
-
-//                if (jumpTimeoutDelta >= 0.0f)
-//                {
-//                    jumpTimeoutDelta -= Time.deltaTime;
-//                }
-//            }
-//            else
-//            {
-//                jumpTimeoutDelta = jumpTimeout;
-//                if (fallTimeoutDelta >= 0.0f)
-//                {
-//                    fallTimeoutDelta -= Time.deltaTime;
-//                }
-//                else
-//                {
-//                    if (animator)
-//                    {
-//                        animator.SetBool("IsFreeFall", true);
-//                    }
-//                }
-
-//                isJump = false;
-//            }
-
-//            if (verticalVelocity < terminalVelocity)
-//            {
-//                verticalVelocity += gravity * Time.deltaTime;
-//            }
-//        }
-//        #endregion
-        //#region isJump?
-        //public void Jump()
-        //{
-        //    isJump = true;
-        //}
-        //#endregion
-
-        //#region isrunnig
-        //public void Running()
-        //{
-        //    if (UnityEngine.Input.GetKey(KeyCode.LeftShift))
-        //    {
-        //        isRun = true;
-        //    }
-        //    else
-        //    {
-        //        isRun = false;
-        //    }
-        //}
-        //#endregion
 #region Move
         public void Move(Vector2 input)
         {
@@ -212,43 +133,8 @@ namespace RandomWorld
             transform.rotation = Quaternion.Euler(0, SpinRotationY, 0);
         }
         #endregion
-        //public void WeaponPositionRotation()
-        //{
-        //    if (weaponPrefab_1 != null && primaryWeapon != null)
-        //    {
-        //        primaryWeapon = Instantiate(weaponPrefab_1, primarySocket);
-        //    }
-        //    else
-        //    {
-        //        primaryWeapon.transform.SetLocalPositionAndRotation(
-        //            primaryWeapon.OffsetPosition,
-        //            Quaternion.Euler(primaryWeapon.OffsetRotation));
-        //    }
-        //    if (weaponPrefab_2 != null )
-        //    {
-        //        secondaryWeapon = Instantiate(weaponPrefab_2, secondarySocket);
-        //    }
-        //    else
-        //    {
-        //        secondaryWeapon.transform.SetLocalPositionAndRotation(
-        //            secondaryWeapon.OffsetPosition,
-        //            Quaternion.Euler(secondaryWeapon.OffsetRotation));
-        //    }
-        //    if (weaponPrefab_3 != null)
-        //    {
-        //        thirdWeapon = Instantiate(weaponPrefab_3, thirdSocket);
-        //    }
-        //    else
-        //    {
-        //        thirdWeapon.transform.SetLocalPositionAndRotation(
-        //            thirdWeapon.OffsetPosition,
-        //            Quaternion.Euler(thirdWeapon.OffsetRotation));
-        //    }
-        //}
-        public void OnChangeWeaponToBack()
-        {
-            animator.SetTrigger("Equip Trigger");
-        }
+       
+        
 
         private Transform holsterTargetSocket;
         private bool isEquipmentChanging = false; // 장비를 바꾸는 중일 때, TRUE (:장비를 꺼내거나 넣을 때)
@@ -274,6 +160,13 @@ namespace RandomWorld
             if (weaponToEquip != null)
             {                
                 EquipWeapon(weaponToEquip);
+            }
+        }
+        public void EquippedAction()
+        {
+            if(currentWeapon != null)
+            {
+
             }
         }
 
