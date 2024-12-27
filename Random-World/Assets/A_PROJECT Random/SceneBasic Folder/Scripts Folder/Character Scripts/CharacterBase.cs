@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.Windows;
@@ -58,17 +59,17 @@ namespace RandomWorld
 
         public float CurrentHP => currentHP;
         private float currentHP;
-       
+
         private int socketIndex = -1;
         private WeaponBase currentWeapon;
         private WeaponBase weaponToEquip;
 
         private Transform rightHandTransform;
-        
+
 
         private void Awake()
         {
-            
+
             animator = GetComponent<Animator>();
             unityCharacterController = GetComponent<UnityEngine.CharacterController>();
             rightHandTransform = animator.GetBoneTransform(HumanBodyBones.RightHand);
@@ -90,14 +91,15 @@ namespace RandomWorld
             //Running();
             //JumpAndGravity();
             GroundedCheck();
+            CheckLayer();
 
             animator.SetFloat("Horizontal", horizontalBlend);
             animator.SetFloat("Vertical", verticalBlend);
             animator.SetFloat("Magnitude", movement.magnitude);
-            animator.SetFloat("IsRun", isRun ? 1f : 0f);
+            //animator.SetFloat("IsRun", isRun ? 1f : 0f);
         }
 
-#region GroundedCheck
+        #region GroundedCheck
         private void GroundedCheck()
         {
             Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - groundedOffset, transform.position.z);
@@ -109,7 +111,7 @@ namespace RandomWorld
             }
         }
         #endregion
-#region Move
+        #region Move
         public void Move(Vector2 input)
         {
             movement = (transform.right * input.x) + (transform.forward * input.y);
@@ -117,7 +119,7 @@ namespace RandomWorld
             verticalBlend = Mathf.Lerp(verticalBlend, input.y, 10 * Time.deltaTime);
 
             Vector3 moveVec = movement * Time.deltaTime;
-            if(isRun)
+            if (isRun)
             {
                 unityCharacterController.Move(moveVec * RunSpeed);
             }
@@ -129,24 +131,54 @@ namespace RandomWorld
             moveVec.y += verticalVelocity * Time.deltaTime;
         }
         #endregion
-#region Rotate
+        #region Rotate
         public void Rotate(float inputX)
         {
             SpinRotationY += inputX;
             transform.rotation = Quaternion.Euler(0, SpinRotationY, 0);
         }
         #endregion
-       
+
 
         private Transform holsterTargetSocket;
         private bool isEquipmentChanging = false; // 장비를 바꾸는 중일 때, TRUE (:장비를 꺼내거나 넣을 때)
 
-        //public void AmingPoint()
+        public LayerMask DropWeeapon;
+        public LayerMask lay_2;
+        private Collider[] DropWeaponOverlapped;
+        public float rad;
+
+        public void CheckLayer()
+        {
+            if (DropWeaponOverlapped != null && DropWeaponOverlapped.Length > 0)
+            {
+                for (int i = 0; i < DropWeaponOverlapped.Length; i++)
+                {
+                    var dropWeaponText = DropWeaponOverlapped[i].GetComponentInChildren<TextMeshPro>();
+                    dropWeaponText.enabled = false;
+                }
+            }
+            DropWeaponOverlapped = Physics.OverlapSphere(transform.position, rad, DropWeeapon, QueryTriggerInteraction.Ignore);
+            for (int i = 0; i < DropWeaponOverlapped.Length; i++)
+            {
+                var dropWeaponText = DropWeaponOverlapped[i].GetComponentInChildren<TextMeshPro>();
+                dropWeaponText.enabled = true;
+            }
+        }
+
+        //public bool RoomClear;
+        //public bool RoomBlocken;
+        //public GameObject Door;
+        //public void OpentheDoor()
         //{
-        //    if (true)
+        //    //방을 클리어하면 문이 열린다.
+        //    if(RoomClear)
         //    {
-        //        transform.position
+        //        float a = Mathf.Lerp(1, 10, 1);
+        //        Door.transform.position = new Vector3(0, a, 0);
         //    }
+
+        //    //특정 조건으로 문을 부수면 문이 열린다.
         //}
 
         public void ReloadWeapon()
@@ -174,11 +206,11 @@ namespace RandomWorld
 
             currentWeapon = null;
             if (weaponToEquip != null)
-            {                
+            {
                 EquipWeapon(weaponToEquip);
             }
         }
-        
+
 
         public void EquipWeapon(WeaponBase weapon)
         {
