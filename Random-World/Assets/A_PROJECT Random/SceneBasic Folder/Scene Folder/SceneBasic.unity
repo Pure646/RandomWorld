@@ -3816,6 +3816,23 @@ MonoBehaviour:
   - m_Rig: {fileID: 1583393679}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &1318609022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005843538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bab39d3b4d898847a4a32311c6148d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DropWeeapon:
+    serializedVersion: 2
+    m_Bits: 2048
+  Character: {fileID: 1318609016}
+  rad: 2
 --- !u!1 &1337908248
 GameObject:
   m_ObjectHideFlags: 0
@@ -5491,6 +5508,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1583393680}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4052413750804199780, guid: e9a8d58d75c9057468de1c9fdde8f496, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1318609022}
     - targetCorrespondingSourceObject: {fileID: 4052413750804199780, guid: e9a8d58d75c9057468de1c9fdde8f496, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1318609021}

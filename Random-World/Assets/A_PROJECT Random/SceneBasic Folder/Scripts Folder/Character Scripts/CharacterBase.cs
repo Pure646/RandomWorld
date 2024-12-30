@@ -18,6 +18,7 @@ namespace RandomWorld
 
         private float horizontalBlend;
         private float verticalBlend;
+        private float JumpBlend;
         private float SpinRotationY = 0f;
 
         private UnityEngine.CharacterController unityCharacterController;
@@ -33,10 +34,70 @@ namespace RandomWorld
 
         private bool isJump = false;
         private bool isGrounded;
+        private float Speed;
         private float fallTimeoutDelta;
         private float jumpTimeoutDelta;
         private float verticalVelocity;
         private float terminalVelocity = 53.0f;
+
+        public void Jump()
+        {
+            if(isGrounded)
+            {
+                fallTimeoutDelta = fallTimeout;
+                isJump = true;
+                animator.SetBool("IsJump", false);
+                animator.SetBool("IsFreeFall", false);
+
+                if(verticalVelocity < 0f)
+                {
+                    verticalVelocity = -2f;
+                }
+                if(isJump && jumpTimeoutDelta <= 0f)
+                {
+                    verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                    
+                    animator.SetBool("IsJump", true);
+                }
+                if (jumpTimeoutDelta >= 0f)
+                {
+                    jumpTimeoutDelta -= Time.deltaTime;
+                }
+            }
+            else
+            {
+                jumpTimeoutDelta = jumpTimeout;
+                if(fallTimeoutDelta >= 0f)
+                {
+                    fallTimeoutDelta -= Time.deltaTime;
+                }
+                else
+                {
+                    animator.SetBool("IsFreeFall", true);
+                }
+                isJump = false;
+            }
+        }
+        
+        public void Gravity()
+        {
+            if (verticalVelocity < terminalVelocity)
+            {
+                verticalVelocity += gravity * Time.deltaTime;
+            }
+        }
+        private void GroundedCheck()
+        {
+            Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - groundedOffset, transform.position.z);
+            isGrounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers, QueryTriggerInteraction.Ignore);
+
+            if (animator)
+            {
+                animator.SetBool("IsGrounded", isGrounded);
+                animator.SetBool("IsFreeFall", false);
+            }
+        }
+
 
         private bool isRun;
         public float RunSpeed;
@@ -57,6 +118,8 @@ namespace RandomWorld
 
         public CharacterHP characterData;
 
+        private Transform holsterTargetSocket;
+        private bool isEquipmentChanging = false; // 장비를 바꾸는 중일 때, TRUE (:장비를 꺼내거나 넣을 때)
         public float CurrentHP => currentHP;
         private float currentHP;
 
@@ -88,30 +151,24 @@ namespace RandomWorld
 
         private void Update()
         {
-            //Running();
-            //JumpAndGravity();
             GroundedCheck();
-            CheckLayer();
+            Gravity();
 
             animator.SetFloat("Horizontal", horizontalBlend);
             animator.SetFloat("Vertical", verticalBlend);
             animator.SetFloat("Magnitude", movement.magnitude);
-            //animator.SetFloat("IsRun", isRun ? 1f : 0f);
+            animator.SetFloat("Running Blend", isRun ? RunSpeed : 0f);
         }
-
-        #region GroundedCheck
-        private void GroundedCheck()
+       
+        public void Running()
         {
-            Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - groundedOffset, transform.position.z);
-            isGrounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers, QueryTriggerInteraction.Ignore);
-
-            if (animator)
-            {
-                animator.SetBool("IsGrounded", isGrounded);
-            }
+            isRun = true;
         }
-        #endregion
-        #region Move
+        public void Walking()
+        {
+            isRun = false;
+        }
+
         public void Move(Vector2 input)
         {
             movement = (transform.right * input.x) + (transform.forward * input.y);
@@ -127,59 +184,12 @@ namespace RandomWorld
             {
                 unityCharacterController.Move(moveVec * moveSpeed);
             }
-
-            moveVec.y += verticalVelocity * Time.deltaTime;
         }
-        #endregion
-        #region Rotate
         public void Rotate(float inputX)
         {
             SpinRotationY += inputX;
             transform.rotation = Quaternion.Euler(0, SpinRotationY, 0);
         }
-        #endregion
-
-
-        private Transform holsterTargetSocket;
-        private bool isEquipmentChanging = false; // 장비를 바꾸는 중일 때, TRUE (:장비를 꺼내거나 넣을 때)
-
-        public LayerMask DropWeeapon;
-        public LayerMask lay_2;
-        private Collider[] DropWeaponOverlapped;
-        public float rad;
-
-        public void CheckLayer()
-        {
-            if (DropWeaponOverlapped != null && DropWeaponOverlapped.Length > 0)
-            {
-                for (int i = 0; i < DropWeaponOverlapped.Length; i++)
-                {
-                    var dropWeaponText = DropWeaponOverlapped[i].GetComponentInChildren<TextMeshPro>();
-                    dropWeaponText.enabled = false;
-                }
-            }
-            DropWeaponOverlapped = Physics.OverlapSphere(transform.position, rad, DropWeeapon, QueryTriggerInteraction.Ignore);
-            for (int i = 0; i < DropWeaponOverlapped.Length; i++)
-            {
-                var dropWeaponText = DropWeaponOverlapped[i].GetComponentInChildren<TextMeshPro>();
-                dropWeaponText.enabled = true;
-            }
-        }
-
-        //public bool RoomClear;
-        //public bool RoomBlocken;
-        //public GameObject Door;
-        //public void OpentheDoor()
-        //{
-        //    //방을 클리어하면 문이 열린다.
-        //    if(RoomClear)
-        //    {
-        //        float a = Mathf.Lerp(1, 10, 1);
-        //        Door.transform.position = new Vector3(0, a, 0);
-        //    }
-
-        //    //특정 조건으로 문을 부수면 문이 열린다.
-        //}
 
         public void ReloadWeapon()
         {

@@ -18,10 +18,19 @@ namespace RandomWorld
 
         private void Start()
         {
-            //InputSystem.Instance.Jump += OnJump;
-
+            InputSystem.Instance.Run += Running;
+            InputSystem.Instance.Walk += Walking;
+            InputSystem.Instance.Jump += Jumping;
             InputSystem.Instance.OnEquipWeapon += CommandEquip;
             InputSystem.Instance.OnHolsterWeapon += CommandHolster;
+        }
+        private void Walking()
+        {
+            characterBase.Walking();
+        }
+        private void Running()
+        {
+            characterBase.Running();
         }
         private void CommandHolster()
         {
@@ -33,10 +42,10 @@ namespace RandomWorld
             characterBase.EquipWeapon(index);
         }
         
-        //private void OnJump()
-        //{
-        //    characterBase.Jump();
-        //}
+        private void Jumping()
+        {
+            characterBase.Jump();
+        }
 
         private void Update()
         {

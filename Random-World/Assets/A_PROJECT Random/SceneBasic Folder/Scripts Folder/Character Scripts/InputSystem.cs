@@ -15,6 +15,8 @@ namespace RandomWorld
         private Vector2 look;
 
         public System.Action Jump;
+        public System.Action Run;
+        public System.Action Walk;
         public System.Action<int> OnEquipWeapon;
         public System.Action OnHolsterWeapon;
         public System.Action ReloadWeapon;
@@ -52,6 +54,15 @@ namespace RandomWorld
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 OnEquipWeapon?.Invoke(2);
+            }
+
+            if(Input.GetKey(KeyCode.LeftShift))
+            {
+                Run?.Invoke();
+            }
+            else
+            {
+                Walk?.Invoke();
             }
 
             if(Input.GetKeyDown(KeyCode.T))
