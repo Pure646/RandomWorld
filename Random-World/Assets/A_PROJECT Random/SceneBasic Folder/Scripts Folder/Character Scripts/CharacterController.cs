@@ -23,6 +23,11 @@ namespace RandomWorld
             InputSystem.Instance.Jump += Jumping;
             InputSystem.Instance.OnEquipWeapon += CommandEquip;
             InputSystem.Instance.OnHolsterWeapon += CommandHolster;
+            InputSystem.Instance.Fire += BulletFire;
+        }
+        private void BulletFire()
+        {
+            characterBase.Fire();
         }
         private void Walking()
         {

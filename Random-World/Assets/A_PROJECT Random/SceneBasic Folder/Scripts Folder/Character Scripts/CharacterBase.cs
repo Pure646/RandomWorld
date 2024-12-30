@@ -34,70 +34,10 @@ namespace RandomWorld
 
         private bool isJump = false;
         private bool isGrounded;
-        private float Speed;
         private float fallTimeoutDelta;
         private float jumpTimeoutDelta;
         private float verticalVelocity;
         private float terminalVelocity = 53.0f;
-
-        public void Jump()
-        {
-            if(isGrounded)
-            {
-                fallTimeoutDelta = fallTimeout;
-                isJump = true;
-                animator.SetBool("IsJump", false);
-                animator.SetBool("IsFreeFall", false);
-
-                if(verticalVelocity < 0f)
-                {
-                    verticalVelocity = -2f;
-                }
-                if(isJump && jumpTimeoutDelta <= 0f)
-                {
-                    verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
-                    
-                    animator.SetBool("IsJump", true);
-                }
-                if (jumpTimeoutDelta >= 0f)
-                {
-                    jumpTimeoutDelta -= Time.deltaTime;
-                }
-            }
-            else
-            {
-                jumpTimeoutDelta = jumpTimeout;
-                if(fallTimeoutDelta >= 0f)
-                {
-                    fallTimeoutDelta -= Time.deltaTime;
-                }
-                else
-                {
-                    animator.SetBool("IsFreeFall", true);
-                }
-                isJump = false;
-            }
-        }
-        
-        public void Gravity()
-        {
-            if (verticalVelocity < terminalVelocity)
-            {
-                verticalVelocity += gravity * Time.deltaTime;
-            }
-        }
-        private void GroundedCheck()
-        {
-            Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - groundedOffset, transform.position.z);
-            isGrounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers, QueryTriggerInteraction.Ignore);
-
-            if (animator)
-            {
-                animator.SetBool("IsGrounded", isGrounded);
-                animator.SetBool("IsFreeFall", false);
-            }
-        }
-
 
         private bool isRun;
         public float RunSpeed;
@@ -129,7 +69,6 @@ namespace RandomWorld
 
         private Transform rightHandTransform;
 
-
         private void Awake()
         {
 
@@ -159,7 +98,7 @@ namespace RandomWorld
             animator.SetFloat("Magnitude", movement.magnitude);
             animator.SetFloat("Running Blend", isRun ? RunSpeed : 0f);
         }
-       
+
         public void Running()
         {
             isRun = true;
@@ -168,7 +107,6 @@ namespace RandomWorld
         {
             isRun = false;
         }
-
         public void Move(Vector2 input)
         {
             movement = (transform.right * input.x) + (transform.forward * input.y);
@@ -190,12 +128,66 @@ namespace RandomWorld
             SpinRotationY += inputX;
             transform.rotation = Quaternion.Euler(0, SpinRotationY, 0);
         }
+        public void Jump()      // 일단 보류 나중에 수정할 예정
+        {
+            if (isGrounded)
+            {
+                fallTimeoutDelta = fallTimeout;
+                isJump = true;
+                animator.SetBool("IsJump", false);
+                animator.SetBool("IsFreeFall", false);
 
+                if (verticalVelocity < 0f)
+                {
+                    verticalVelocity = -2f;
+                }
+                if (isJump && jumpTimeoutDelta <= 0f)
+                {
+                    verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
+                    animator.SetBool("IsJump", true);
+                }
+                if (jumpTimeoutDelta >= 0f)
+                {
+                    jumpTimeoutDelta -= Time.deltaTime;
+                }
+            }
+            else
+            {
+                jumpTimeoutDelta = jumpTimeout;
+                if (fallTimeoutDelta >= 0f)
+                {
+                    fallTimeoutDelta -= Time.deltaTime;
+                }
+                else
+                {
+                    animator.SetBool("IsFreeFall", true);
+                }
+                isJump = false;
+            }
+        }
+        public void Gravity()
+        {
+            if (verticalVelocity < terminalVelocity)
+            {
+                verticalVelocity += gravity * Time.deltaTime;
+            }
+        }
+        private void GroundedCheck()
+        {
+            Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - groundedOffset, transform.position.z);
+            isGrounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers, QueryTriggerInteraction.Ignore);
+
+            if (animator)
+            {
+                animator.SetBool("IsGrounded", isGrounded);
+                animator.SetBool("IsFreeFall", false);
+            }
+        }
         public void ReloadWeapon()
         {
             animator.SetTrigger("Reload Trigger");
         }
-
         public void HolsterWeapon(Transform targetSocket, WeaponBase nextWeapon = null)
         {
             if (isEquipmentChanging)
@@ -205,7 +197,6 @@ namespace RandomWorld
             isEquipmentChanging = true;
             animator.SetTrigger("Holster Trigger");
         }
-
         public void HolsterComplete()
         {
             isEquipmentChanging = false;
@@ -220,8 +211,6 @@ namespace RandomWorld
                 EquipWeapon(weaponToEquip);
             }
         }
-
-
         public void EquipWeapon(WeaponBase weapon)
         {
             if (isEquipmentChanging)
@@ -232,7 +221,6 @@ namespace RandomWorld
             animator.SetTrigger("Equip Trigger");
             animator.SetFloat("Equip Blend", 1f);
         }
-
         public void EquipComplete()
         {
             isEquipmentChanging = false;
@@ -244,10 +232,17 @@ namespace RandomWorld
 
             weaponToEquip = null;
         }
-
         public void EquipWeapon(int index)
         {
             if (isEquipmentChanging)
+                return;
+
+            bool isAlreadySameWeapon =
+                (index == 0 && currentWeapon == primaryWeapon) ||
+                (index == 1 && currentWeapon == secondaryWeapon) ||
+                (index == 2 && currentWeapon == thirdWeapon);
+
+            if (isAlreadySameWeapon)
                 return;
 
             if (index == 0)
@@ -284,6 +279,14 @@ namespace RandomWorld
             else
             {
                 EquipWeapon(weaponToEquip);
+            }
+        }
+
+        public void Fire()
+        {
+            if (currentWeapon != null)
+            {
+                currentWeapon.Fire();
             }
         }
     }

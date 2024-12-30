@@ -17,6 +17,7 @@ namespace RandomWorld
         public System.Action Jump;
         public System.Action Run;
         public System.Action Walk;
+        public System.Action Fire;
         public System.Action<int> OnEquipWeapon;
         public System.Action OnHolsterWeapon;
         public System.Action ReloadWeapon;
@@ -54,6 +55,10 @@ namespace RandomWorld
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 OnEquipWeapon?.Invoke(2);
+            }
+            if(Input.GetKey(KeyCode.Mouse0))
+            {
+                Fire?.Invoke();
             }
 
             if(Input.GetKey(KeyCode.LeftShift))
