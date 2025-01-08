@@ -118,7 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Bullet: {fileID: 3239014456989121816, guid: c059ad9a14386464581da916437bafe2, type: 3}
   ResponeBullet: {fileID: 2873160085717003747}
-  powerBullet: 20
+  powerBullet: 15
   FireLatingOffsetTime: 1
   <OffsetPosition>k__BackingField: {x: 0, y: 0, z: 0}
   <OffsetRotation>k__BackingField: {x: 0, y: 9.236, z: 0}
