@@ -11,11 +11,6 @@ namespace RandomWorld
         public Image hpBar;
         public TextMeshProUGUI hpText;
         public TextMeshProUGUI ammoText;
-
-        //[Range(0f, 1f)]
-        //public float current;
-        //public float max = 1f;
-
         public void SetHP(float current, float max)
         {
             hpBar.fillAmount = current / max;

@@ -19,7 +19,6 @@ namespace RandomWorld
             Tec_9,
             Deagle,
         }
-        
         public GameObject Bullet;
         public Transform ResponeBullet;
         public float powerBullet = 10f;
