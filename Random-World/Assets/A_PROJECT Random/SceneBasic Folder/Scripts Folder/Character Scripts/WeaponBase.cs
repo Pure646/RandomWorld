@@ -35,6 +35,7 @@ namespace RandomWorld
         {
             FireLating();
         }
+
         public void FireLating()
         {
             if(FireLatingTime > 0f)
@@ -42,6 +43,7 @@ namespace RandomWorld
                 FireLatingTime -= 10f * Time.deltaTime;
             }
         }
+
         public void Fire()
         {
             if (Bullet != null)
@@ -54,12 +56,14 @@ namespace RandomWorld
                     newBullet.SetActive(true);
 
                     newBulletRigid.AddForce(ResponeBullet.forward * powerBullet, ForceMode.Impulse);
-
-                    Destroy(newBullet, 5);
+                    if(newBullet != null)
+                    {
+                        Destroy(newBullet, 5);
+                    }
                 }
             }
         }
-
+        
         public WeaponType weaponType;
 
     }

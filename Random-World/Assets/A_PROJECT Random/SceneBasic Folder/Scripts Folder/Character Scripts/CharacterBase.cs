@@ -25,19 +25,21 @@ namespace RandomWorld
 
         public float jumpHeight = 1.2f;
         public float fallTimeout = 0.15f;
-        public float jumpTimeout = 0.50f;
+        public float jumpTimeout = 0.10f;
         public float gravity = -15.0f;
 
         public float groundedOffset = -0.14f;
         public float groundedRadius = 0.28f;
         public LayerMask groundLayers;
 
-        private bool isJump = false;
+        private bool isJumping = false;
+        private float verticalVelocity;
+        private float terminalVelocity = 53.0f;
         private bool isGrounded;
         private float fallTimeoutDelta;
         private float jumpTimeoutDelta;
-        private float verticalVelocity;
-        private float terminalVelocity = 53.0f;
+        private int countJump;
+        public int moreJump = 1;
 
         private bool isRun;
         public float RunSpeed;
@@ -85,11 +87,11 @@ namespace RandomWorld
             primaryWeapon.transform.SetLocalPositionAndRotation(
                     primaryWeapon.OffsetPosition,
                     Quaternion.Euler(primaryWeapon.OffsetRotation));
-            //currentHP = characterData.MaxHP;
         }
 
         private void Update()
         {
+            JumpAndGravity();
             GroundedCheck();
 
             animator.SetFloat("Horizontal", horizontalBlend);
@@ -102,108 +104,105 @@ namespace RandomWorld
         {
             isRun = true;
         }
+
         public void Walking()
         {
             isRun = false;
         }
+
         public void Move(Vector2 input)
         {
             movement = (transform.right * input.x) + (transform.forward * input.y);
             horizontalBlend = Mathf.Lerp(horizontalBlend, input.x, 10 * Time.deltaTime);
             verticalBlend = Mathf.Lerp(verticalBlend, input.y, 10 * Time.deltaTime);
 
-            Vector3 moveVec = movement * Time.deltaTime;
+            float speed = isRun ? RunSpeed : moveSpeed;
+            Vector3 moveVec = (movement * speed * Time.deltaTime) + (new Vector3(0, verticalVelocity, 0) * Time.deltaTime);
             if (isRun)
             {
-                unityCharacterController.Move(moveVec * RunSpeed);
+                unityCharacterController.Move(moveVec);
             }
             else
             {
-                unityCharacterController.Move(moveVec * moveSpeed);
+                unityCharacterController.Move(moveVec);
             }
         }
+
         public void Rotate(float inputX)
         {
             SpinRotationY += inputX;
             transform.rotation = Quaternion.Euler(0, SpinRotationY, 0);
         }
 
-        public LayerMask GroundLayer;
-        private Collider[] CheckCollider;
-        private float GroundRadius = 0.51f;
-        private bool IsGrounded;
-        private float JumpValueNumber = 0f;
-        public float JumpHeightNumber = 1.5f;
-
-        private float CurrentHeight;
-        private float GroundedOffset = 0.5f;
-        private float Gravity = -9.81f;
-        private float JumpUPTime;
-        public float JumpDownTime = 2f;
-
-        private bool ClickJump;
-        private bool PossibleJump;
-        private float JumpRemainTime = 0f;
-        private float sqrting;
-        public float JumpCoolTimeSet = 1.5f;
         public void Jump()
         {
-            if (JumpRemainTime <= 0f)
-            {
-                ClickJump = true;
-            }
+            isJumping = true;
         }
-        public void JumpCoolTime()
+
+        public void JumpAndGravity()
         {
-
-            if (JumpRemainTime > 0)
+            if (isGrounded)
             {
-                JumpRemainTime -= Time.deltaTime;
+                fallTimeoutDelta = fallTimeout;
+                countJump = moreJump;
 
-                if (PossibleJump == false && JumpRemainTime <= 0)
+                animator.SetBool("IsJump", false);
+                animator.SetBool("IsFreeFall", false);
+
+                if (verticalVelocity < 0.0f)
                 {
-                    PossibleJump = true;
-                    Debug.Log("PossibleJump = true");
+                    verticalVelocity = -2f;
+                }
+
+                if (isJumping && jumpTimeoutDelta <= 0.0f )
+                {
+                    verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
+                    animator.SetBool("IsJump", true);
+                }
+
+                if (jumpTimeoutDelta >= 0.0f)
+                {
+                    jumpTimeoutDelta -= Time.deltaTime;
                 }
             }
-            else if (JumpRemainTime <= 0 && ClickJump == true)
+            else
             {
-                JumpRemainTime = JumpCoolTimeSet;
-                ClickJump = false;
+                if (isJumping)
+                {
+                    // Jump
+                    if (isJumping && countJump >= 0)
+                    {
+                        verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
-                if (PossibleJump == true)
-                {
-                    PossibleJump = false;
+                        countJump -= 1;
+
+                        animator.SetBool("IsJump", true);
+                    }
                 }
-            }
-            if (JumpUPTime >= 0f)
-            {
-                JumpUPTime -= Time.deltaTime;
-            }
-        }
-        public void JumpingAndGravity()
-        {
-            if (ClickJump == false)
-            {
-                if (IsGrounded == false && JumpUPTime < 0f)
+
+                // reset the jump timeout timer
+                jumpTimeoutDelta = jumpTimeout;
+
+                // fall timeout
+                if (fallTimeoutDelta >= 0.0f)
                 {
-                    CurrentHeight += Gravity * Time.deltaTime;
-                    //CurrentHeight = Mathf.Lerp(CurrentHeight, transform.position.y + Gravity, Time.deltaTime);
+                    fallTimeoutDelta -= Time.deltaTime;
                 }
                 else
                 {
-                    CurrentHeight = Mathf.Lerp(CurrentHeight, JumpHeightNumber, Time.deltaTime);
-                    //Ai.Translate(transform.up * CurrentHeight, Space.Self);
-
+                    animator.SetBool("IsFreeFall", true);
                 }
-                //Debug.Log(CurrentHeight);
+
+                isJumping = false;
             }
-            else if (ClickJump == true)
+
+            if (verticalVelocity < terminalVelocity)
             {
-                //JumpValueNumber = transform.position.y + JumpHeightNumber;
-                JumpUPTime = JumpDownTime;
+                verticalVelocity += gravity * Time.deltaTime;
             }
         }
+
         private void GroundedCheck()
         {
             Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - groundedOffset, transform.position.z);
@@ -215,10 +214,12 @@ namespace RandomWorld
                 animator.SetBool("IsFreeFall", false);
             }
         }
+
         public void ReloadWeapon()
         {
             animator.SetTrigger("Reload Trigger");
         }
+
         public void HolsterWeapon(Transform targetSocket, WeaponBase nextWeapon = null)
         {
             if (isEquipmentChanging)
@@ -228,6 +229,7 @@ namespace RandomWorld
             isEquipmentChanging = true;
             animator.SetTrigger("Holster Trigger");
         }
+
         public void HolsterComplete()
         {
             isEquipmentChanging = false;
@@ -242,6 +244,7 @@ namespace RandomWorld
                 EquipWeapon(weaponToEquip);
             }
         }
+
         public void EquipWeapon(WeaponBase weapon)
         {
             if (isEquipmentChanging)
@@ -252,6 +255,7 @@ namespace RandomWorld
             animator.SetTrigger("Equip Trigger");
             animator.SetFloat("Equip Blend", 1f);
         }
+
         public void EquipComplete()
         {
             isEquipmentChanging = false;
@@ -263,6 +267,7 @@ namespace RandomWorld
 
             weaponToEquip = null;
         }
+
         public void EquipWeapon(int index)
         {
             if (isEquipmentChanging)
