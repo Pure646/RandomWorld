@@ -91,7 +91,6 @@ namespace RandomWorld
         private void Update()
         {
             GroundedCheck();
-            Gravity();
 
             animator.SetFloat("Horizontal", horizontalBlend);
             animator.SetFloat("Vertical", verticalBlend);
@@ -128,49 +127,81 @@ namespace RandomWorld
             SpinRotationY += inputX;
             transform.rotation = Quaternion.Euler(0, SpinRotationY, 0);
         }
-        public void Jump()      // 일단 보류 나중에 수정할 예정
+
+        public LayerMask GroundLayer;
+        private Collider[] CheckCollider;
+        private float GroundRadius = 0.51f;
+        private bool IsGrounded;
+        private float JumpValueNumber = 0f;
+        public float JumpHeightNumber = 1.5f;
+
+        private float CurrentHeight;
+        private float GroundedOffset = 0.5f;
+        private float Gravity = -9.81f;
+        private float JumpUPTime;
+        public float JumpDownTime = 2f;
+
+        private bool ClickJump;
+        private bool PossibleJump;
+        private float JumpRemainTime = 0f;
+        private float sqrting;
+        public float JumpCoolTimeSet = 1.5f;
+        public void Jump()
         {
-            if (isGrounded)
+            if (JumpRemainTime <= 0f)
             {
-                fallTimeoutDelta = fallTimeout;
-                isJump = true;
-                animator.SetBool("IsJump", false);
-                animator.SetBool("IsFreeFall", false);
+                ClickJump = true;
+            }
+        }
+        public void JumpCoolTime()
+        {
 
-                if (verticalVelocity < 0f)
-                {
-                    verticalVelocity = -2f;
-                }
-                if (isJump && jumpTimeoutDelta <= 0f)
-                {
-                    verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            if (JumpRemainTime > 0)
+            {
+                JumpRemainTime -= Time.deltaTime;
 
-                    animator.SetBool("IsJump", true);
-                }
-                if (jumpTimeoutDelta >= 0f)
+                if (PossibleJump == false && JumpRemainTime <= 0)
                 {
-                    jumpTimeoutDelta -= Time.deltaTime;
+                    PossibleJump = true;
+                    Debug.Log("PossibleJump = true");
                 }
             }
-            else
+            else if (JumpRemainTime <= 0 && ClickJump == true)
             {
-                jumpTimeoutDelta = jumpTimeout;
-                if (fallTimeoutDelta >= 0f)
+                JumpRemainTime = JumpCoolTimeSet;
+                ClickJump = false;
+
+                if (PossibleJump == true)
                 {
-                    fallTimeoutDelta -= Time.deltaTime;
+                    PossibleJump = false;
+                }
+            }
+            if (JumpUPTime >= 0f)
+            {
+                JumpUPTime -= Time.deltaTime;
+            }
+        }
+        public void JumpingAndGravity()
+        {
+            if (ClickJump == false)
+            {
+                if (IsGrounded == false && JumpUPTime < 0f)
+                {
+                    CurrentHeight += Gravity * Time.deltaTime;
+                    //CurrentHeight = Mathf.Lerp(CurrentHeight, transform.position.y + Gravity, Time.deltaTime);
                 }
                 else
                 {
-                    animator.SetBool("IsFreeFall", true);
+                    CurrentHeight = Mathf.Lerp(CurrentHeight, JumpHeightNumber, Time.deltaTime);
+                    //Ai.Translate(transform.up * CurrentHeight, Space.Self);
+
                 }
-                isJump = false;
+                //Debug.Log(CurrentHeight);
             }
-        }
-        public void Gravity()
-        {
-            if (verticalVelocity < terminalVelocity)
+            else if (ClickJump == true)
             {
-                verticalVelocity += gravity * Time.deltaTime;
+                //JumpValueNumber = transform.position.y + JumpHeightNumber;
+                JumpUPTime = JumpDownTime;
             }
         }
         private void GroundedCheck()
