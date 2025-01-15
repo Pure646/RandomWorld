@@ -7,7 +7,6 @@ namespace RandomWorld
 {
     public class Projectile : MonoBehaviour
     {
-        
         private void OnCollisionEnter(Collision collision)
         {
             Vector3 position = collision.contacts[0].point;
@@ -23,16 +22,22 @@ namespace RandomWorld
                 {
                     // TODO : Ground Effect 출력
                     EffectManager.Instance.SpawnEffect("Impact_Ground", position, rotation);
-
                 }
                 else if (collision.collider.material.name.Contains("Wall"))
                 {
                     // TODO : Wall Effect 출력
                     EffectManager.Instance.SpawnEffect("Impact_Wall", position, rotation);
                 }
-                else if(collision.collider.material.name.Contains("Bot"))
+                else if (collision.collider.CompareTag("Bot"))
                 {
-                    EffectManager.Instance.SpawnEffect("Impact_Bot", position,rotation);
+                    EffectManager.Instance.SpawnEffect("Impact_Bot", position, rotation);
+
+                    IDamage damageInterface = collision.collider.GetComponent<IDamage>();
+                    damageInterface.ApplyDamage(out float Health);
+                    if(Health <= -1000 )
+                    {
+                        damageInterface.ApplyHeal(5000);
+                    }
                 }
             }
 

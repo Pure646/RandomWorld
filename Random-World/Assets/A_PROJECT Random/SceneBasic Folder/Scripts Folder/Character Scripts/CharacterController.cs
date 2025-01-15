@@ -40,11 +40,13 @@ namespace RandomWorld
         private void CommandHolster()
         {
             characterBase.HolsterWeapon(null);
+            Cursor.lockState = CursorLockMode.None;
         }
 
         private void CommandEquip(int index)
         {
             characterBase.EquipWeapon(index);
+            Cursor.lockState = CursorLockMode.Locked;
         }
         
         private void Jumping()
@@ -59,7 +61,6 @@ namespace RandomWorld
 
             Vector2 LookInput = InputSystem.Instance.Looking;
             characterBase.Rotate(LookInput.x);
-
             //ingameUI.SetHP(characterBase.CurrentHP, characterBase.characterData.MaxHP);
         }
     }

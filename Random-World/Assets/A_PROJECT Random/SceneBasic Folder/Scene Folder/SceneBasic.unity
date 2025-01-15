@@ -2637,11 +2637,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35cb5859d6d4dad44a26c883cd3b77ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 1031140221}
-  layer:
-    serializedVersion: 2
-    m_Bits: 1024
-  radian: 30
+  boxHealth: 100
+  Damage: 300
 --- !u!1001 &559342413
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2653,6 +2650,10 @@ PrefabInstance:
     - target: {fileID: 100008, guid: d6dad0fb52ba12f458cc7ffb66882391, type: 3}
       propertyPath: m_Name
       value: Boxunitychan
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: d6dad0fb52ba12f458cc7ffb66882391, type: 3}
+      propertyPath: m_TagString
+      value: Bot
       objectReference: {fileID: 0}
     - target: {fileID: 400008, guid: d6dad0fb52ba12f458cc7ffb66882391, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4307,11 +4308,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1004398444}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1031140221 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4052413750804199780, guid: e9a8d58d75c9057468de1c9fdde8f496, type: 3}
-  m_PrefabInstance: {fileID: 1734961916217020148}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1057655022
 GameObject:
   m_ObjectHideFlags: 0

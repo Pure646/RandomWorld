@@ -4,32 +4,31 @@ using UnityEngine;
 
 namespace RandomWorld
 {
-    public class Boxunity : MonoBehaviour
+    public class Boxunity : MonoBehaviour, IDamage
     {
-        private bool check;
-        public GameObject character;
-        public LayerMask layer;
-        public float radian = 1.5f;
+        public float boxHealth;
+        public float Damage;
+        private Animator animator;
 
+        private void Awake()
+        {
+            animator = GetComponent<Animator>();
+        }
         private void Update()
         {
-            //Check();
-
+            animator.SetFloat("CurrentHealth", boxHealth);
         }
-        private void Check()
+        public void ApplyDamage(out float Health)
         {
-            //check = Physics.CheckSphere(transform.position + new Vector3(0, 1, 0), radian, layer, QueryTriggerInteraction.Ignore);
-
-            //if(check)
-            //{
-            //    transform.position = new Vector3(Mathf.Lerp(transform.position.x, character.transform.position.x, Time.deltaTime)
-            //        , 0, Mathf.Lerp(transform.position.z, character.transform.position.z, Time.deltaTime));
-            //}
+            boxHealth -= Damage;
+            Health = boxHealth;
+            Debug.Log($"CurrentHealth : {Health}");
         }
-        
-        private void OnCollisionEnter(Collision collision)
+        public void ApplyHeal(float Heal)
         {
-            
+            boxHealth += Heal;
+
+            Debug.Log($"Full_Heal : {boxHealth}");
         }
     }
 }
