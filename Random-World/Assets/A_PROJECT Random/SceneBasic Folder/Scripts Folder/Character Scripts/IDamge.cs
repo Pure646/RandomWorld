@@ -4,18 +4,8 @@ using UnityEngine;
 
 namespace RandomWorld
 {
-    public class IDamge : MonoBehaviour
+    public interface IDamge
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
+        public void ApplyDamage(float damage);
     }
 }

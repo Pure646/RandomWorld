@@ -13,20 +13,21 @@ namespace RandomWorld
 
         private void Update()
         {
-            Check();
-            Rotate();
+            //Check();
+
         }
         private void Check()
         {
-            check = Physics.CheckSphere(transform.position + new Vector3(0, 1, 0), radian, layer, QueryTriggerInteraction.Ignore);
+            //check = Physics.CheckSphere(transform.position + new Vector3(0, 1, 0), radian, layer, QueryTriggerInteraction.Ignore);
 
-            if(check)
-            {
-                transform.position = new Vector3(Mathf.Lerp(transform.position.x, character.transform.position.x, Time.deltaTime)
-                    , 0, Mathf.Lerp(transform.position.z, character.transform.position.z, Time.deltaTime));
-            }
+            //if(check)
+            //{
+            //    transform.position = new Vector3(Mathf.Lerp(transform.position.x, character.transform.position.x, Time.deltaTime)
+            //        , 0, Mathf.Lerp(transform.position.z, character.transform.position.z, Time.deltaTime));
+            //}
         }
-        private void Rotate()
+        
+        private void OnCollisionEnter(Collision collision)
         {
             
         }
