@@ -563,9 +563,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100326, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
       insertIndex: -1
       addedObject: {fileID: 547564679725220946}
-    - targetCorrespondingSourceObject: {fileID: 100326, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5433308031850661583}
   m_SourcePrefab: {fileID: 100100000, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
 --- !u!4 &4052413750803702788 stripped
 Transform:
@@ -619,6 +616,7 @@ MonoBehaviour:
   groundLayers:
     serializedVersion: 2
     m_Bits: 1
+  moreJump: 1
   RunSpeed: 3
   weaponPrefab_1: {fileID: 3722936071995647273, guid: 990528ce02b984d4fb9e9ebe7843d0cb, type: 3}
   weaponPrefab_2: {fileID: 5757326757150240921, guid: 671ebee17000ed84bb99eefe33818d5c, type: 3}
@@ -689,19 +687,3 @@ MonoBehaviour:
     m_Bits: 2048
   Character: {fileID: 4052413750803703108}
   rad: 2
---- !u!114 &5433308031850661583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4052413750804199780}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RigLayers:
-  - m_Rig: {fileID: 7751523577724743382}
-    m_Active: 1
-  m_Effectors: []
