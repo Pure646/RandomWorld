@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.UIElements;
 using UnityEngine.Windows;
 
@@ -70,10 +71,14 @@ namespace RandomWorld
         private WeaponBase weaponToEquip;
 
         private Transform rightHandTransform;
+        public Rig Rigging;
+
+        private bool Reloading = false;
+        public int bullet_remain { get; set; }
 
         private void Awake()
         {
-
+            Rigging = GetComponentInChildren<Rig>();
             animator = GetComponent<Animator>();
             unityCharacterController = GetComponent<UnityEngine.CharacterController>();
             rightHandTransform = animator.GetBoneTransform(HumanBodyBones.RightHand);
@@ -93,6 +98,7 @@ namespace RandomWorld
         {
             JumpAndGravity();
             GroundedCheck();
+            AimRig();
 
             animator.SetFloat("Horizontal", horizontalBlend);
             animator.SetFloat("Vertical", verticalBlend);
@@ -266,6 +272,12 @@ namespace RandomWorld
                 currentWeapon.HandOffsetPosition, Quaternion.Euler(currentWeapon.HandOffsetRotation));
 
             weaponToEquip = null;
+            
+        }
+
+        public void AimRig()
+        {
+            Rigging.weight = currentWeapon != null && Reloading == false ? 1f : 0f;
         }
 
         public void EquipWeapon(int index)
@@ -324,6 +336,16 @@ namespace RandomWorld
             {
                 currentWeapon.Fire();
             }
+        }
+
+        public void Reload()
+        {
+            if(Reloading == false)
+            {
+                Reloading = true;
+                animator.SetTrigger("Reload Trigger");
+            }
+            
         }
     }
 }

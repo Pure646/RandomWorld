@@ -8,6 +8,7 @@ namespace RandomWorld
     public class CharacterController : MonoBehaviour
     {
         public CharacterBase characterBase;
+        public WeaponBase weapon;
 
         public IngameUI ingameUI;
         public CharacterHP characterHP;
@@ -24,10 +25,16 @@ namespace RandomWorld
             InputSystem.Instance.OnEquipWeapon += CommandEquip;
             InputSystem.Instance.OnHolsterWeapon += CommandHolster;
             InputSystem.Instance.Fire += BulletFire;
+            InputSystem.Instance.ReloadWeapon += WeaponReload;
+        }
+        private void WeaponReload()
+        {
+            characterBase.Reload();
         }
         private void BulletFire()
         {
             characterBase.Fire();
+            weapon.Reloading();
         }
         private void Walking()
         {

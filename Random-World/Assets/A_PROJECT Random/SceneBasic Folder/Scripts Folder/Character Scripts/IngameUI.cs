@@ -8,9 +8,11 @@ namespace RandomWorld
 {
     public class IngameUI : MonoBehaviour
     {
+        private WeaponBase weapon;
         public Image hpBar;
         public TextMeshProUGUI hpText;
         public TextMeshProUGUI ammoText;
+
         public void SetHP(float current, float max)
         {
             hpBar.fillAmount = current / max;
@@ -33,6 +35,8 @@ namespace RandomWorld
 
         public void SetAmmo(int current, int max)
         {
+            current = weapon.bullet_remain;
+            max = weapon.remain_Max_bullet;
             ammoText.text = $"{current} / {max}";
         }
     }
