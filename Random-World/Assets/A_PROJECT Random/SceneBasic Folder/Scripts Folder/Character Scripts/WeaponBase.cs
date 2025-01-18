@@ -37,16 +37,6 @@ namespace RandomWorld
         [field: SerializeField] public int remain_Max_bullet { get; private set; }
         [field: SerializeField] public int bullet_remain { get; private set; }
 
-        //private void weapon()
-        //{
-        //    switch (weaponType)
-        //    {
-        //        case weaponType == WeaponType.AK12:
-        //            remain_bullet = 30;
-        //            break;
-
-        //    }
-        //}
 
         private void Update()
         {
@@ -65,7 +55,7 @@ namespace RandomWorld
         {
             if (Bullet != null)
             {
-                if(FireLatingTime <= 0 && bullet_remain > 0)
+                if(FireLatingTime <= 0 && bullet_remain > 0 && bullet_remain <= remain_Max_bullet)
                 {
                     FireLatingTime = FireLatingOffsetTime;
                     GameObject newBullet = Instantiate(Bullet, ResponeBullet.position, ResponeBullet.rotation);
@@ -82,10 +72,10 @@ namespace RandomWorld
                 }
             }
         }
+
         public void Reloading()
         {
             bullet_remain = remain_Max_bullet;
         }
-
     }
 }

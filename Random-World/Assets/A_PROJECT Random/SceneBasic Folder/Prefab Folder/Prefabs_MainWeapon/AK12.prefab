@@ -116,6 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0706531ff0c9de949891a3a6cd955ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponType: 1
   Bullet: {fileID: 3239014456989121816, guid: c059ad9a14386464581da916437bafe2, type: 3}
   ResponeBullet: {fileID: 2873160085717003747}
   powerBullet: 15
@@ -124,4 +125,5 @@ MonoBehaviour:
   <OffsetRotation>k__BackingField: {x: 0, y: 9.236, z: 0}
   <HandOffsetPosition>k__BackingField: {x: -0.293, y: 0.092, z: 0.009}
   <HandOffsetRotation>k__BackingField: {x: 0, y: 91.70526, z: 0}
-  weaponType: 0
+  <remain_Max_bullet>k__BackingField: 40
+  <bullet_remain>k__BackingField: 40

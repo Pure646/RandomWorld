@@ -1178,6 +1178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 799de54843686ad429b027a5e06641d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponHolder: {fileID: 819138208}
   hpBar: {fileID: 1243011866}
   hpText: {fileID: 223875447}
   ammoText: {fileID: 641932567}
@@ -3066,6 +3067,11 @@ MeshFilter:
 --- !u!4 &816231079 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4052413750803702856, guid: e9a8d58d75c9057468de1c9fdde8f496, type: 3}
+  m_PrefabInstance: {fileID: 1734961916217020148}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &819138208 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7749115103873895636, guid: e9a8d58d75c9057468de1c9fdde8f496, type: 3}
   m_PrefabInstance: {fileID: 1734961916217020148}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &834708493 stripped
@@ -5998,6 +6004,10 @@ PrefabInstance:
       propertyPath: ingameUI
       value: 
       objectReference: {fileID: 380233620}
+    - target: {fileID: 4340818093192504247, guid: e9a8d58d75c9057468de1c9fdde8f496, type: 3}
+      propertyPath: weaponHolder
+      value: 
+      objectReference: {fileID: 819138208}
     - target: {fileID: 4900135657233551267, guid: e9a8d58d75c9057468de1c9fdde8f496, type: 3}
       propertyPath: m_Data.m_SourceObjects.m_Item0.transform
       value: 
@@ -6046,6 +6056,10 @@ PrefabInstance:
       propertyPath: Rig1
       value: 
       objectReference: {fileID: 2059896136}
+    - target: {fileID: 8256410358641858396, guid: e9a8d58d75c9057468de1c9fdde8f496, type: 3}
+      propertyPath: ingameui
+      value: 
+      objectReference: {fileID: 380233620}
     - target: {fileID: 8256410358641858396, guid: e9a8d58d75c9057468de1c9fdde8f496, type: 3}
       propertyPath: moreJump
       value: 10

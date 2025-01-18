@@ -8,11 +8,29 @@ namespace RandomWorld
 {
     public class IngameUI : MonoBehaviour
     {
-        private WeaponBase weapon;
+        public GameObject weaponHolder;
+        private WeaponBase weaponBase;
+
         public Image hpBar;
         public TextMeshProUGUI hpText;
         public TextMeshProUGUI ammoText;
 
+        private void Start()
+        {
+            weaponBase = weaponHolder.GetComponentInChildren<WeaponBase>();
+        }
+
+        private void Update()
+        {
+            if(weaponBase == null)
+            {
+                weaponBase = weaponHolder.GetComponentInChildren<WeaponBase>();
+            }
+            else
+            {
+                SetAmmo(weaponBase.bullet_remain, weaponBase.remain_Max_bullet);
+            }
+        }
         public void SetHP(float current, float max)
         {
             hpBar.fillAmount = current / max;
@@ -35,8 +53,7 @@ namespace RandomWorld
 
         public void SetAmmo(int current, int max)
         {
-            current = weapon.bullet_remain;
-            max = weapon.remain_Max_bullet;
+
             ammoText.text = $"{current} / {max}";
         }
     }

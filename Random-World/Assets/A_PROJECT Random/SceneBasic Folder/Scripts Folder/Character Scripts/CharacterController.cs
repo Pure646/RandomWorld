@@ -8,10 +8,12 @@ namespace RandomWorld
     public class CharacterController : MonoBehaviour
     {
         public CharacterBase characterBase;
-        public WeaponBase weapon;
-
         public IngameUI ingameUI;
         public CharacterHP characterHP;
+
+        public GameObject weaponHolder;
+        private WeaponBase weaponBase;
+
         private void Awake()
         {
             characterBase = GetComponent<CharacterBase>();
@@ -26,15 +28,22 @@ namespace RandomWorld
             InputSystem.Instance.OnHolsterWeapon += CommandHolster;
             InputSystem.Instance.Fire += BulletFire;
             InputSystem.Instance.ReloadWeapon += WeaponReload;
+
         }
         private void WeaponReload()
         {
-            characterBase.Reload();
+            if (weaponBase != null)
+            {
+                if(weaponBase.bullet_remain < weaponBase.remain_Max_bullet)
+                {
+                    characterBase.Reload();
+                    weaponBase.Reloading();
+                }
+            }
         }
         private void BulletFire()
         {
             characterBase.Fire();
-            weapon.Reloading();
         }
         private void Walking()
         {
@@ -61,6 +70,7 @@ namespace RandomWorld
             characterBase.Jump();
         }
 
+
         private void Update()
         {
             Vector2 MoveInput = InputSystem.Instance.Movement;
@@ -68,7 +78,15 @@ namespace RandomWorld
 
             Vector2 LookInput = InputSystem.Instance.Looking;
             characterBase.Rotate(LookInput.x);
-            //ingameUI.SetHP(characterBase.CurrentHP, characterBase.characterData.MaxHP);
+
+            if (weaponBase == null)
+            {
+                weaponBase = weaponHolder.GetComponentInChildren<WeaponBase>();
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }
