@@ -74,7 +74,6 @@ namespace RandomWorld
         public Rig Rigging;
 
         private bool Reloading = false;
-        public int bullet_remain { get; set; }
 
         private void Awake()
         {
@@ -221,11 +220,6 @@ namespace RandomWorld
             }
         }
 
-        public void ReloadWeapon()
-        {
-            animator.SetTrigger("Reload Trigger");
-        }
-
         public void HolsterWeapon(Transform targetSocket, WeaponBase nextWeapon = null)
         {
             if (isEquipmentChanging)
@@ -275,10 +269,6 @@ namespace RandomWorld
             
         }
 
-        public void AimRig()
-        {
-            Rigging.weight = currentWeapon != null && Reloading == false ? 1f : 0f;
-        }
 
         public void EquipWeapon(int index)
         {
@@ -338,12 +328,53 @@ namespace RandomWorld
             }
         }
 
-        public void Reload()
+        public Transform LeftHandTarget;
+        public Transform RightHandTarget;
+        public Transform LeftHint;
+        public Transform RightHint;
+        public bool IsRigin;
+        public void AimRig()
         {
-            if(Reloading == false)
+            Rigging.weight = currentWeapon != null && Reloading == false ? 1f : 0f;
+            StartCoroutine(Wating());
+            if (Rigging.weight == 1f)
+            {
+                if(IsRigin == true)
+                {
+                    LeftHandTarget.position = currentWeapon.WeaponLeftRigPosition /*+ weaponHolder.position*/;
+                    LeftHandTarget.rotation = currentWeapon.WeaponLeftRigRotation;
+                    RightHandTarget.position = currentWeapon.WeaponRighitPosition /*+ weaponHolder.position*/;
+                    RightHandTarget.rotation = currentWeapon.WeaponRightRotation;
+                    LeftHint.position = currentWeapon.LeftTargetHintposition /*+ weaponHolder.position*/;
+                    RightHint.position = currentWeapon.RightTargetHintposition /*+ weaponHolder.position*/;
+                    //LeftHandTarget.position = LeftHandTarget != null ? currentWeapon.WeaponLeftRigPosition : Vector3.zero;
+                    //LeftHandTarget.rotation = LeftHandTarget != null ? currentWeapon.WeaponLeftRigRotation : Quaternion.identity;
+                    //RightHandTarget.position = RightHandTarget != null ? currentWeapon.WeaponRighitPosition : Vector3.zero;
+                    //RightHandTarget.rotation = RightHandTarget != null ? currentWeapon.WeaponRightRotation : Quaternion.identity;
+                    //LeftHint.position = LeftHint != null ? currentWeapon.LeftTargetHintposition : Vector3.zero;
+                    //RightHint.position = RightHint != null ? currentWeapon.RightTargetHintposition : Vector3.zero;
+                    IsRigin = false;
+                }
+            }
+            else
+            {
+                IsRigin = true;
+            }
+        }
+        public void ReloadWeapon()
+        {
+            if (currentWeapon != null && Reloading == false)
             {
                 Reloading = true;
                 animator.SetTrigger("Reload Trigger");
+            }
+        }
+        public IEnumerator Wating()
+        {
+            if(Reloading == true)
+            {
+                yield return new WaitForSeconds(2f);
+                Reloading = false;
             }
             
         }

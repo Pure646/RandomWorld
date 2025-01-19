@@ -36,7 +36,7 @@ namespace RandomWorld
             {
                 if(weaponBase.bullet_remain < weaponBase.remain_Max_bullet)
                 {
-                    characterBase.Reload();
+                    characterBase.ReloadWeapon();
                     weaponBase.Reloading();
                 }
             }

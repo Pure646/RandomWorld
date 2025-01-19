@@ -34,9 +34,14 @@ namespace RandomWorld
         [field: SerializeField] public Vector3 OffsetRotation { get; private set; }
         [field: SerializeField] public Vector3 HandOffsetPosition { get; private set; }
         [field: SerializeField] public Vector3 HandOffsetRotation { get; private set; }
+        [field: SerializeField] public Vector3 WeaponRighitPosition { get; private set; }
+        [field: SerializeField] public Quaternion WeaponRightRotation { get; private set; }
+        [field: SerializeField] public Vector3 WeaponLeftRigPosition { get; private set; }
+        [field: SerializeField] public Quaternion WeaponLeftRigRotation { get; private set; }
+        [field: SerializeField] public Vector3 RightTargetHintposition { get; private set; }
+        [field: SerializeField] public Vector3 LeftTargetHintposition { get; private set; }
         [field: SerializeField] public int remain_Max_bullet { get; private set; }
         [field: SerializeField] public int bullet_remain { get; private set; }
-
 
         private void Update()
         {
