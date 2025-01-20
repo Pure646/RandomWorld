@@ -53,8 +53,15 @@ namespace RandomWorld
 
         public void SetAmmo(int current, int max)
         {
-
             ammoText.text = $"{current} / {max}";
+            if(max == 0)
+            {
+                ammoText.enabled = false;
+            }
+            else
+            {
+                ammoText.enabled = true;
+            }
         }
     }
 }

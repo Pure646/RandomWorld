@@ -11,6 +11,14 @@ namespace RandomWorld
 {
     public class CharacterBase : MonoBehaviour
     {
+        public bool IsArmed => currentWeapon != null;
+
+        public Vector3 AimingPoint
+        {
+            get => aimingPointTarget.position;
+            set => aimingPointTarget.position = value;
+        }
+
         private Animator animator;
 
         private Vector3 movement;
@@ -20,7 +28,6 @@ namespace RandomWorld
         private float horizontalBlend;
         private float verticalBlend;
         private float JumpBlend;
-        private float SpinRotationY = 0f;
 
         private UnityEngine.CharacterController unityCharacterController;
 
@@ -70,23 +77,20 @@ namespace RandomWorld
         private WeaponBase currentWeapon;
         private WeaponBase weaponToEquip;
 
-        private Transform rightHandTransform;
-        public Rig Rigging;
+        public bool Reloading { get; set; }
 
-        private bool Reloading = false;
+        public Transform aimingPointTarget;
+        public Transform leftHandIKTarget;
+        public Rig rigAiming;
 
         private void Awake()
         {
-            Rigging = GetComponentInChildren<Rig>();
             animator = GetComponent<Animator>();
             unityCharacterController = GetComponent<UnityEngine.CharacterController>();
-            rightHandTransform = animator.GetBoneTransform(HumanBodyBones.RightHand);
         }
 
         private void Start()
         {
-            InputSystem.Instance.ReloadWeapon += ReloadWeapon;
-
             primaryWeapon = Instantiate(weaponPrefab_1, primarySocket);
             primaryWeapon.transform.SetLocalPositionAndRotation(
                     primaryWeapon.OffsetPosition,
@@ -97,12 +101,25 @@ namespace RandomWorld
         {
             JumpAndGravity();
             GroundedCheck();
-            AimRig();
+            Aiming();
 
             animator.SetFloat("Horizontal", horizontalBlend);
             animator.SetFloat("Vertical", verticalBlend);
             animator.SetFloat("Magnitude", movement.magnitude);
             animator.SetFloat("Running Blend", isRun ? RunSpeed : 0f);
+
+        }
+        public void Aiming()
+        {
+            if (Reloading == false)
+            {
+                float aimingWeight = IsArmed ? 1f : 0f;
+                rigAiming.weight = Mathf.Lerp(rigAiming.weight, aimingWeight, Time.deltaTime * 10f);
+            }
+            else
+            {
+                rigAiming.weight = 0f;
+            }
         }
 
         public void Running()
@@ -133,10 +150,9 @@ namespace RandomWorld
             }
         }
 
-        public void Rotate(float inputX)
+        public void Rotate(float angleY)
         {
-            SpinRotationY += inputX;
-            transform.rotation = Quaternion.Euler(0, SpinRotationY, 0);
+            transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + angleY, 0);
         }
 
         public void Jump()
@@ -159,7 +175,7 @@ namespace RandomWorld
                     verticalVelocity = -2f;
                 }
 
-                if (isJumping && jumpTimeoutDelta <= 0.0f )
+                if (isJumping && jumpTimeoutDelta <= 0.0f)
                 {
                     verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
@@ -263,10 +279,12 @@ namespace RandomWorld
             currentWeapon = weaponToEquip;
             currentWeapon.transform.SetParent(weaponHolder);
             currentWeapon.transform.SetLocalPositionAndRotation(
-                currentWeapon.HandOffsetPosition, Quaternion.Euler(currentWeapon.HandOffsetRotation));
+                currentWeapon.WeaponData.RightHandPosition, Quaternion.Euler(currentWeapon.WeaponData.RightHandRotation));
 
             weaponToEquip = null;
-            
+
+            leftHandIKTarget.localPosition = currentWeapon.WeaponData.LeftHandPosition;
+            leftHandIKTarget.localRotation = Quaternion.Euler(currentWeapon.WeaponData.LeftHandRotation);
         }
 
 
@@ -328,55 +346,15 @@ namespace RandomWorld
             }
         }
 
-        public Transform LeftHandTarget;
-        public Transform RightHandTarget;
-        public Transform LeftHint;
-        public Transform RightHint;
-        public bool IsRigin;
-        public void AimRig()
-        {
-            Rigging.weight = currentWeapon != null && Reloading == false ? 1f : 0f;
-            StartCoroutine(Wating());
-            if (Rigging.weight == 1f)
-            {
-                if(IsRigin == true)
-                {
-                    LeftHandTarget.position = currentWeapon.WeaponLeftRigPosition /*+ weaponHolder.position*/;
-                    LeftHandTarget.rotation = currentWeapon.WeaponLeftRigRotation;
-                    RightHandTarget.position = currentWeapon.WeaponRighitPosition /*+ weaponHolder.position*/;
-                    RightHandTarget.rotation = currentWeapon.WeaponRightRotation;
-                    LeftHint.position = currentWeapon.LeftTargetHintposition /*+ weaponHolder.position*/;
-                    RightHint.position = currentWeapon.RightTargetHintposition /*+ weaponHolder.position*/;
-                    //LeftHandTarget.position = LeftHandTarget != null ? currentWeapon.WeaponLeftRigPosition : Vector3.zero;
-                    //LeftHandTarget.rotation = LeftHandTarget != null ? currentWeapon.WeaponLeftRigRotation : Quaternion.identity;
-                    //RightHandTarget.position = RightHandTarget != null ? currentWeapon.WeaponRighitPosition : Vector3.zero;
-                    //RightHandTarget.rotation = RightHandTarget != null ? currentWeapon.WeaponRightRotation : Quaternion.identity;
-                    //LeftHint.position = LeftHint != null ? currentWeapon.LeftTargetHintposition : Vector3.zero;
-                    //RightHint.position = RightHint != null ? currentWeapon.RightTargetHintposition : Vector3.zero;
-                    IsRigin = false;
-                }
-            }
-            else
-            {
-                IsRigin = true;
-            }
-        }
         public void ReloadWeapon()
         {
             if (currentWeapon != null && Reloading == false)
             {
-                Reloading = true;
                 animator.SetTrigger("Reload Trigger");
+
+                Reloading = true;
             }
         }
-        public IEnumerator Wating()
-        {
-            if(Reloading == true)
-            {
-                yield return new WaitForSeconds(2f);
-                Reloading = false;
-            }
-            
-        }
+
     }
 }
