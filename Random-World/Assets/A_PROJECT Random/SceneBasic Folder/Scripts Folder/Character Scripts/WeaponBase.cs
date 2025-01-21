@@ -20,7 +20,7 @@ namespace RandomWorld
             Tec_9,
             Deagle,
         }
-
+        public CharacterBase character;
         public WeaponType weaponType;
         public GameObject Bullet;
         
@@ -36,6 +36,15 @@ namespace RandomWorld
         [field: SerializeField] public int remain_Max_bullet { get; private set; }
         [field: SerializeField] public int bullet_remain { get; private set; }
 
+        private void Start()
+        {
+            GameObject gameComponent = GameObject.Find("unitychan");
+
+            if(gameComponent != null)
+            {
+                character = gameComponent.GetComponent<CharacterBase>();
+            }
+        }
         private void Update()
         {
             FireLating();
@@ -55,17 +64,20 @@ namespace RandomWorld
             {
                 if(FireLatingTime <= 0 && bullet_remain > 0 && bullet_remain <= remain_Max_bullet)
                 {
-                    FireLatingTime = FireLatingOffsetTime;
-                    GameObject newBullet = Instantiate(Bullet, ResponeBullet.position, ResponeBullet.rotation);
-                    Rigidbody newBulletRigid = newBullet.GetComponent<Rigidbody>();
-                    newBullet.SetActive(true);
-
-                    newBulletRigid.AddForce(ResponeBullet.forward * powerBullet, ForceMode.Impulse);
-
-                    bullet_remain -= 1;
-                    if (newBullet != null)
+                    if(character.Reloading == false)
                     {
-                        Destroy(newBullet, 5);
+                        FireLatingTime = FireLatingOffsetTime;
+                        GameObject newBullet = Instantiate(Bullet, ResponeBullet.position, ResponeBullet.rotation);
+                        Rigidbody newBulletRigid = newBullet.GetComponent<Rigidbody>();
+                        newBullet.SetActive(true);
+
+                        newBulletRigid.AddForce(ResponeBullet.forward * powerBullet, ForceMode.Impulse);
+
+                        bullet_remain -= 1;
+                        if (newBullet != null)
+                        {
+                            Destroy(newBullet, 5);
+                        }
                     }
                 }
             }

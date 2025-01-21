@@ -46,7 +46,7 @@ namespace RandomWorld
                 {
                     characterBase.ReloadWeapon();
                     weaponBase.Reloading();
-                    //StartCoroutine(wating());
+                    StartCoroutine(wating());
                 }
             }
         }
@@ -90,7 +90,7 @@ namespace RandomWorld
             Vector2 LookInput = InputSystem.Instance.Looking;
             characterBase.Rotate(LookInput.x * rotationSpeed);
 
-            UpdateCameraRotate(LookInput.y);
+            UpdateCameraRotate(LookInput.y * -1f * rotationSpeed);
 
             if (weaponBase == null)
             {
@@ -101,10 +101,9 @@ namespace RandomWorld
                 return;
             }
         }
-        private IEnumerable wating()
+        public IEnumerator wating()
         {
             yield return new WaitForSeconds(2f);
-
             characterBase.Reloading = false;
         }
 
@@ -120,7 +119,8 @@ namespace RandomWorld
             targetAngle = ClampAngle(
                 targetAngle + axisY, 
                 cameraClampMin, cameraClampMax);
-            Quaternion rotationResult = Quaternion.Euler(targetAngle * -1f * rotationSpeed, cameraPivot.rotation.eulerAngles.y, 0);
+            Debug.Log(targetAngle);
+            Quaternion rotationResult = Quaternion.Euler(targetAngle, cameraPivot.rotation.eulerAngles.y, 0);
             cameraPivot.rotation = rotationResult;
         }
     }
