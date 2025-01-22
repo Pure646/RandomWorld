@@ -22,6 +22,9 @@ namespace RandomWorld
         public System.Action OnHolsterWeapon;
         public System.Action ReloadWeapon;
 
+        public System.Action SelfDamage;
+        public System.Action SelfHeal;
+
         private void Awake()
         {
             Instance = this;
@@ -36,7 +39,6 @@ namespace RandomWorld
             float LookX = Input.GetAxis("Mouse X");
             float LookY = Input.GetAxis("Mouse Y");
             look = new Vector2(LookX, LookY);
-
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Jump?.Invoke();
@@ -56,6 +58,17 @@ namespace RandomWorld
             {
                 OnEquipWeapon?.Invoke(2);
             }
+
+            if (Input.GetKeyDown(KeyCode.Alpha9))
+            {
+                SelfHeal?.Invoke();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                SelfDamage?.Invoke();
+            }
+
             if(Input.GetKey(KeyCode.Mouse0))
             {
                 Fire?.Invoke();

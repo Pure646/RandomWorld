@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,12 +9,21 @@ namespace RandomWorld
 {
     public class IngameUI : MonoBehaviour
     {
+        public static IngameUI Instance { get; private set; }
+
         public GameObject weaponHolder;
+        private GameObject weapon;
         private WeaponBase weaponBase;
+        private CharacterBase character;
 
         public Image hpBar;
         public TextMeshProUGUI hpText;
         public TextMeshProUGUI ammoText;
+
+        private void Awake()
+        {
+            Instance = this;
+        }
 
         private void Start()
         {

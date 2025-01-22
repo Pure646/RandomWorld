@@ -7,6 +7,6 @@ namespace RandomWorld
     public interface IDamage
     {
         public void ApplyDamage(out float Health);
-        public void ApplyHeal(float Heal);
+        public void ApplyHeal(out float Heal);
     }
 }

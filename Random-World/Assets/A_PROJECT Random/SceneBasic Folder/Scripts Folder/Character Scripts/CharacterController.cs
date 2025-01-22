@@ -7,9 +7,9 @@ namespace RandomWorld
 {
     public class CharacterController : MonoBehaviour
     {
+        private IDamage Damage;
         public CharacterBase characterBase;
         public IngameUI ingameUI;
-        public CharacterHP characterHP;
 
         private float targetAngle;
         [Range(0f, 2f)]
@@ -25,8 +25,8 @@ namespace RandomWorld
         private void Awake()
         {
             characterBase = GetComponent<CharacterBase>();
+            Damage = gameObject.GetComponent<IDamage>();
         }
-
         private void Start()
         {
             InputSystem.Instance.Run += Running;
@@ -36,7 +36,26 @@ namespace RandomWorld
             InputSystem.Instance.OnHolsterWeapon += CommandHolster;
             InputSystem.Instance.Fire += BulletFire;
             InputSystem.Instance.ReloadWeapon += WeaponReload;
+            InputSystem.Instance.SelfDamage += SelfDamage;
+            InputSystem.Instance.SelfHeal += SelfHealing;
 
+            characterBase.OnDamaged += OnReceiveDamaged;
+
+            IngameUI.Instance.SetHP(characterBase.CharacterHP, characterBase.CharacterMax);
+        }
+
+        private void OnReceiveDamaged()
+        {
+            IngameUI.Instance.SetHP(characterBase.CharacterHP, characterBase.CharacterMax);
+        }
+
+        private void SelfDamage()
+        {
+            Damage.ApplyDamage(out float damage);
+        }
+        private void SelfHealing()
+        {
+            Damage.ApplyHeal(out float Heal);
         }
         private void WeaponReload()
         {
@@ -50,6 +69,7 @@ namespace RandomWorld
                 }
             }
         }
+
         private void BulletFire()
         {
             characterBase.Fire();
@@ -84,13 +104,8 @@ namespace RandomWorld
         {
             characterBase.AimingPoint = CameraSystem.Instance.CameraAimingPoint;
 
-            Vector2 MoveInput = InputSystem.Instance.Movement;
-            characterBase.Move(MoveInput);
-
-            Vector2 LookInput = InputSystem.Instance.Looking;
-            characterBase.Rotate(LookInput.x * rotationSpeed);
-
-            UpdateCameraRotate(LookInput.y * -1f * rotationSpeed);
+            MoveController();
+            RotateController();
 
             if (weaponBase == null)
             {
@@ -101,9 +116,26 @@ namespace RandomWorld
                 return;
             }
         }
+        private void RotateController()
+        {
+            if(characterBase.CharacterHP > 0)
+            {
+                Vector2 LookInput = InputSystem.Instance.Looking;
+                characterBase.Rotate(LookInput.x * rotationSpeed);
+                UpdateCameraRotate(LookInput.y * -1f * rotationSpeed);
+            }
+        }
+        private void MoveController()
+        {
+            if(characterBase.CharacterHP > 0)
+            {
+                Vector2 MoveInput = InputSystem.Instance.Movement;
+                characterBase.Move(MoveInput);
+            }
+        }
         public IEnumerator wating()
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1.8f);
             characterBase.Reloading = false;
         }
 
@@ -119,7 +151,6 @@ namespace RandomWorld
             targetAngle = ClampAngle(
                 targetAngle + axisY, 
                 cameraClampMin, cameraClampMax);
-            Debug.Log(targetAngle);
             Quaternion rotationResult = Quaternion.Euler(targetAngle, cameraPivot.rotation.eulerAngles.y, 0);
             cameraPivot.rotation = rotationResult;
         }

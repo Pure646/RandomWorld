@@ -34,10 +34,6 @@ namespace RandomWorld
 
                     IDamage damageInterface = collision.collider.GetComponent<IDamage>();
                     damageInterface.ApplyDamage(out float Health);
-                    if(Health <= -1000 )
-                    {
-                        damageInterface.ApplyHeal(5000);
-                    }
                 }
             }
 

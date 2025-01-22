@@ -9,7 +9,6 @@ namespace RandomWorld
     {
         [field: SerializeField] public Vector3 RightHandPosition { get; set; }
         [field: SerializeField] public Vector3 RightHandRotation { get; set; }
-
         [field: SerializeField] public Vector3 LeftHandPosition { get; set; }
         [field: SerializeField] public Vector3 LeftHandRotation { get; set; }
     }

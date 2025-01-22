@@ -9,7 +9,7 @@ using UnityEngine.Windows;
 
 namespace RandomWorld
 {
-    public class CharacterBase : MonoBehaviour
+    public class CharacterBase : MonoBehaviour , IDamage
     {
         public bool IsArmed => currentWeapon != null;
 
@@ -18,6 +18,14 @@ namespace RandomWorld
             get => aimingPointTarget.position;
             set => aimingPointTarget.position = value;
         }
+
+        public float CharacterMax => characterMax;
+        public float CharacterHP => characterHP;
+
+        [SerializeField] private float characterMax;
+        [SerializeField] private float characterHP;
+        [SerializeField] private float damage;
+        [SerializeField] private float Healing;
 
         private Animator animator;
 
@@ -66,12 +74,10 @@ namespace RandomWorld
         [SerializeField] private Transform thirdSocket;
         [SerializeField] private Transform weaponHolder;
 
-        public CharacterHP characterData;
+        public event Action OnDamaged;
 
         private Transform holsterTargetSocket;
         private bool isEquipmentChanging = false; // 장비를 바꾸는 중일 때, TRUE (:장비를 꺼내거나 넣을 때)
-        public float CurrentHP => currentHP;
-        private float currentHP;
 
         private int socketIndex = -1;
         private WeaponBase currentWeapon;
@@ -107,11 +113,12 @@ namespace RandomWorld
             animator.SetFloat("Vertical", verticalBlend);
             animator.SetFloat("Magnitude", movement.magnitude);
             animator.SetFloat("Running Blend", isRun ? RunSpeed : 0f);
+            animator.SetFloat("CurrentHealth", CharacterHP);
 
         }
         public void Aiming()
         {
-            if (Reloading == false)
+            if (Reloading == false && characterHP > 0)
             {
                 float aimingWeight = IsArmed ? 1f : 0f;
                 rigAiming.weight = Mathf.Lerp(rigAiming.weight, aimingWeight, Time.deltaTime * 10f);
@@ -286,7 +293,23 @@ namespace RandomWorld
             leftHandIKTarget.localPosition = currentWeapon.WeaponData.LeftHandPosition;
             leftHandIKTarget.localRotation = Quaternion.Euler(currentWeapon.WeaponData.LeftHandRotation);
         }
+        public void ApplyDamage(out float NumDamage)
+        {
+            NumDamage = damage;
+            characterHP -= NumDamage;
+            Debug.Log($"characterHP : {characterHP}");
 
+            OnDamaged?.Invoke();
+        }
+
+        public void ApplyHeal(out float Heal)
+        {
+            Heal = Healing;
+            characterHP += Heal;
+            Debug.Log($"characterHP : {characterHP}");
+
+            OnDamaged?.Invoke();
+        }
 
         public void EquipWeapon(int index)
         {

@@ -6,28 +6,36 @@ namespace RandomWorld
 {
     public class Boxunity : MonoBehaviour, IDamage
     {
-        public float boxHealth;
-        public float Damage;
-        private Animator animator;
+        [SerializeField] private float boxHealthMax;
+        [SerializeField] private float boxHealth;
+        [SerializeField] private float Damage;
+        [SerializeField] private float Healing;
 
+        private Animator animator;
         private void Awake()
         {
             animator = GetComponent<Animator>();
         }
         private void Update()
         {
+            StartCoroutine(HPReset());
             animator.SetFloat("CurrentHealth", boxHealth);
         }
-        public void ApplyDamage(out float Health)
+        private IEnumerator HPReset()
         {
-            boxHealth -= Damage;
-            Health = boxHealth;
-            Debug.Log($"CurrentHealth : {Health}");
+            yield return new WaitForSeconds(5f);
+            boxHealth = boxHealthMax;
         }
-        public void ApplyHeal(float Heal)
+        public void ApplyDamage(out float NumDamage)
         {
+            NumDamage = Damage;
+            boxHealth -= NumDamage;
+            Debug.Log($"CurrentHealth : {boxHealth}");
+        }
+        public void ApplyHeal(out float Heal)
+        {
+            Heal = Healing;
             boxHealth += Heal;
-
             Debug.Log($"Full_Heal : {boxHealth}");
         }
     }
