@@ -21,7 +21,7 @@ namespace RandomWorld
         public System.Action<int> OnEquipWeapon;
         public System.Action OnHolsterWeapon;
         public System.Action ReloadWeapon;
-
+        public System.Action AIHeal;
         public System.Action SelfDamage;
         public System.Action SelfHeal;
 
@@ -59,6 +59,10 @@ namespace RandomWorld
                 OnEquipWeapon?.Invoke(2);
             }
 
+            if(Input.GetKeyDown(KeyCode.Alpha8))
+            {
+                AIHeal?.Invoke();
+            }
             if (Input.GetKeyDown(KeyCode.Alpha9))
             {
                 SelfHeal?.Invoke();
