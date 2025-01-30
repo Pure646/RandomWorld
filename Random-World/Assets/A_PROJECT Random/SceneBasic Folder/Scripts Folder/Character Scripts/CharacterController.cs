@@ -7,8 +7,6 @@ namespace RandomWorld
 {
     public class CharacterController : MonoBehaviour
     {
-        [SerializeField] private Boxunity boxuni;
-
         private IDamage Damage;
         public CharacterBase characterBase;
         public IngameUI ingameUI;
@@ -21,7 +19,6 @@ namespace RandomWorld
         public float cameraClampMax = 80f;
         public float cameraClampMin = -80f;
 
-        //private Boxunity boxunity;
         public GameObject weaponHolder;
         private WeaponBase weaponBase;
 
@@ -41,29 +38,24 @@ namespace RandomWorld
             InputSystem.Instance.ReloadWeapon += WeaponReload;
             InputSystem.Instance.SelfDamage += SelfDamage;
             InputSystem.Instance.SelfHeal += SelfHealing;
-            InputSystem.Instance.AIHeal += AIHealing;
 
             characterBase.OnDamaged += OnReceiveDamaged;
 
             IngameUI.Instance.SetHP(characterBase.CharacterHP, characterBase.CharacterMax);
         }
+
         private void OnReceiveDamaged()
         {
             IngameUI.Instance.SetHP(characterBase.CharacterHP, characterBase.CharacterMax);
         }
-        private void AIHealing()
-        {
-            IDamage boxunity = boxuni.GetComponent<IDamage>();
-            boxunity.ApplyHeal(1f);
-        }
 
         private void SelfDamage()
         {
-            Damage.ApplyDamage(100f);
+            Damage.ApplyDamage(out float damage);
         }
         private void SelfHealing()
         {
-            Damage.ApplyHeal(100f);
+            Damage.ApplyHeal(out float Heal);
         }
         private void WeaponReload()
         {

@@ -8,75 +8,35 @@ namespace RandomWorld
     {
         [SerializeField] private float boxHealthMax;
         [SerializeField] private float boxHealth;
+        [SerializeField] private float Damage;
+        [SerializeField] private float Healing;
 
-        private CapsuleCollider capsulecollider;
         private Animator animator;
-
-        [SerializeField] private float regenerateCoolTime = 5f;
-        private float lastGenerateTime = 0f;
-
         private void Awake()
         {
             animator = GetComponent<Animator>();
-            capsulecollider = GetComponent<CapsuleCollider>();
         }
-        
-        private void Start()
+        private void Update()
         {
-            ResetSetting();
+            StartCoroutine(HPReset());
+            animator.SetFloat("CurrentHealth", boxHealth);
         }
-
-        private void ResetSetting()
+        private IEnumerator HPReset()
         {
+            yield return new WaitForSeconds(5f);
             boxHealth = boxHealthMax;
-            Debug.Log(boxHealth);
-            animator.SetFloat("CurrentHealth", boxHealth);
         }
-
-        void Update()
+        public void ApplyDamage(out float NumDamage)
         {
-            SetTime();
-            
-        }
-
-        private void SetTime()
-        {
-            if (Time.time > lastGenerateTime + regenerateCoolTime)
-            {
-                lastGenerateTime = Time.time;
-            }
-        }
-        private void RefreshAnimationByHealth()
-        {
-            animator.SetFloat("CurrentHealth", boxHealth);
-            capsulecollider.enabled = boxHealth > 0;
-        }
-        public void ApplyHeal(float Heal)
-        {
-            RefreshAnimationByHealth();
-
-            if (boxHealth < boxHealthMax)
-            {
-                boxHealth += Heal;
-                Debug.Log($"재생 : {Heal}");
-
-                if (boxHealth > boxHealthMax)
-                {
-                    boxHealth = boxHealthMax;
-                }
-            }
-            Debug.Log($"boxUnity 체력 = {boxHealth}");
-        }
-
-        public void ApplyDamage(float damage)
-        {
-            boxHealth -= damage;
-            RefreshAnimationByHealth();
-
-            lastGenerateTime = Time.time;
-
+            NumDamage = Damage;
+            boxHealth -= NumDamage;
             Debug.Log($"CurrentHealth : {boxHealth}");
         }
-        
+        public void ApplyHeal(out float Heal)
+        {
+            Heal = Healing;
+            boxHealth += Heal;
+            Debug.Log($"Full_Heal : {boxHealth}");
+        }
     }
 }

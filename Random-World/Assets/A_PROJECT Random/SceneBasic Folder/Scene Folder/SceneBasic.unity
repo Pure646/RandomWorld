@@ -2029,9 +2029,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35cb5859d6d4dad44a26c883cd3b77ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxHealthMax: 100
-  boxHealth: 100
-  regenerateCoolTime: 5
+  boxHealthMax: 5000
+  boxHealth: 5000
+  Damage: 300
+  Healing: 0
 --- !u!1001 &559342413
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6211,10 +6212,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: unitychan
       objectReference: {fileID: 0}
-    - target: {fileID: 4340818093192504247, guid: e9a8d58d75c9057468de1c9fdde8f496, type: 3}
-      propertyPath: boxuni
-      value: 
-      objectReference: {fileID: 555165381}
     - target: {fileID: 4340818093192504247, guid: e9a8d58d75c9057468de1c9fdde8f496, type: 3}
       propertyPath: ingameUI
       value: 
