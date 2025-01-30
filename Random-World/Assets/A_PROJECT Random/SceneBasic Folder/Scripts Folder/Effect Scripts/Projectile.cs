@@ -7,6 +7,8 @@ namespace RandomWorld
 {
     public class Projectile : MonoBehaviour
     {
+        public float damage = 10f;
+
         private void OnCollisionEnter(Collision collision)
         {
             Vector3 position = collision.contacts[0].point;
@@ -33,7 +35,7 @@ namespace RandomWorld
                     EffectManager.Instance.SpawnEffect("Impact_Bot", position, rotation);
 
                     IDamage damageInterface = collision.collider.GetComponent<IDamage>();
-                    damageInterface.ApplyDamage(out float Health);
+                    damageInterface.ApplyDamage(damage);
                 }
             }
 

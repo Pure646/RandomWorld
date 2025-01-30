@@ -293,16 +293,16 @@ namespace RandomWorld
             leftHandIKTarget.localPosition = currentWeapon.WeaponData.LeftHandPosition;
             leftHandIKTarget.localRotation = Quaternion.Euler(currentWeapon.WeaponData.LeftHandRotation);
         }
-        public void ApplyDamage(out float NumDamage)
+        public void ApplyDamage(float damage)
         {
-            NumDamage = damage;
-            characterHP -= NumDamage;
+            damage = this.damage;
+            characterHP -= damage;
             Debug.Log($"characterHP : {characterHP}");
 
             OnDamaged?.Invoke();
         }
 
-        public void ApplyHeal(out float Heal)
+        public void ApplyHeal(float Heal)
         {
             Heal = Healing;
             characterHP += Heal;
