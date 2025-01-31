@@ -8,6 +8,8 @@ namespace RandomWorld
     public class CharacterController : MonoBehaviour
     {
         [SerializeField] private Boxunity boxuni;
+        [SerializeField] private float SetTime;
+        private float newtime = 0f;
 
         private IDamage Damage;
         public CharacterBase characterBase;
@@ -73,7 +75,6 @@ namespace RandomWorld
                 {
                     characterBase.ReloadWeapon();
                     weaponBase.Reloading();
-                    StartCoroutine(wating());
                 }
             }
         }
@@ -141,10 +142,13 @@ namespace RandomWorld
                 characterBase.Move(MoveInput);
             }
         }
-        public IEnumerator wating()
+        
+        private void CoolTIme()
         {
-            yield return new WaitForSeconds(1.8f);
-            characterBase.Reloading = false;
+            if (Time.time >= newtime + SetTime)
+            {
+                newtime = Time.time;
+            }
         }
 
         private float ClampAngle(float angle, float min, float max)

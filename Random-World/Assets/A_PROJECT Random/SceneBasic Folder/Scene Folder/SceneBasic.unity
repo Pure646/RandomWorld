@@ -1811,6 +1811,43 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &555165383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555165377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a593e2d1914e2604694f61d7b49a20f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UnityChan: {fileID: 1318609016}
+  characterController: {fileID: 0}
+--- !u!136 &555165387
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555165377}
+  m_Material: {fileID: 13400000, guid: 1d1272c76a65c8342989a5e5f1398288, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.2
+  m_Height: 1.6
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!1 &565116824
 GameObject:
   m_ObjectHideFlags: 3
@@ -5153,8 +5190,14 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6609879397990391068, guid: 30ca98bc874fcf845872646ba69b87dd, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 555165387}
+    - targetCorrespondingSourceObject: {fileID: 6609879397990391068, guid: 30ca98bc874fcf845872646ba69b87dd, type: 3}
       insertIndex: 3
       addedObject: {fileID: 555165382}
+    - targetCorrespondingSourceObject: {fileID: 6609879397990391068, guid: 30ca98bc874fcf845872646ba69b87dd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 555165383}
   m_SourcePrefab: {fileID: 100100000, guid: 30ca98bc874fcf845872646ba69b87dd, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
