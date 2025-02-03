@@ -8,9 +8,13 @@ namespace RandomWorld
     public class BoxBase : MonoBehaviour
     {
         [SerializeField] private Transform UnityChan;
-        [SerializeField] private UnityEngine.CharacterController characterController;
+        [SerializeField] private Transform Object;
+        [SerializeField] private float MaxSpeed;
+        [SerializeField] private float CurrentSpeed = 1f;
 
-        private CharacterBase characterbase;
+        private float CurrentTime;
+        private float RandomNumber;
+
         private Animator animator;
         private NavMeshAgent agent;
 
@@ -20,37 +24,81 @@ namespace RandomWorld
         {
             animator = GetComponent<Animator>();
             agent = GetComponent<NavMeshAgent>();
-            characterController = GetComponent<UnityEngine.CharacterController>();
-            
         }
         private void Start()
         {
             agent.speed = 1f;
+            agent.acceleration = 1f;
+            agent.stoppingDistance = 1f;
         }
         private void Update()
         {
-            Order_AI();
             Move();
             Rotate();
+            SetTime();
+        }
+        private void SetTime()
+        {
+            if (Time.time > CurrentTime + 2f)
+            {
+                CurrentTime = Time.time;
+                Order_AI();
+                Speed();
+            }
+        }
+        private void Speed()
+        {
+            if(CurrentSpeed < MaxSpeed)
+            {
+                CurrentSpeed += 1f;
+                agent.speed += 1f;
+                agent.acceleration += 1f;
+            }
+            else if(CurrentSpeed >= MaxSpeed)
+            {
+                CurrentSpeed = MaxSpeed;   
+            }
         }
         private void Order_AI()
         {
-            agent.destination = UnityChan.transform.position;
+            RandomNumber = Random.Range(1, 5);
+            //Debug.Log(RandomNumber);
+            switch (RandomNumber)
+            {
+                case 1:
+                    Object.position = new Vector3(0, 1, 0);
+                    break;
+                case 2:
+                    Object.position = new Vector3(20, 1, 0);
+                    break;
+                case 3:
+                    Object.position = new Vector3(0, 1, 20);
+                    break;
+                case 4:
+                    Object.position = new Vector3(20, 1, 20);
+                    break;
+                default:
+                    break;
+            }
         }
         private void Move()
         {
-            Vector3 movement = (transform.forward * agent.velocity.z) + (transform.right * agent.velocity.x);
+            agent.SetDestination(Object.position);
+            Vector3 movement = agent.steeringTarget - transform.position;
+            Vector3 localposition = transform.InverseTransformPoint(movement);
 
-            //characterController.Move(movement);
-
-            animator.SetFloat("Horizontal", movement.x);
-            animator.SetFloat("Vertical", movement.z);
-            animator.SetFloat("Magnitude",movement.magnitude);
+            animator.SetFloat("Horizontal", localposition.x);
+            animator.SetFloat("Vertical", localposition.z);
+            animator.SetFloat("Magnitude", movement.magnitude);
         }
 
         private void Rotate()
         {
-            //transform.LookAt(UnityChan.position);
+            float distance = Vector3.Distance(transform.position, Object.position);
+            if(distance > 2f)
+            {
+                transform.LookAt(Object.position);
+            }
         }
 
         private void NavMeshAgentAI_1()
@@ -86,6 +134,7 @@ namespace RandomWorld
             agent.stoppingDistance = 2f;
             // stoppingDistance : 목표 지점에 도달하기 전에 멈출 거리. 목표 근처에서 Ai가 멈추게 설정.
         }
+
         private void NavMeshAgentAI_2()
         {
             // -메서드-
