@@ -30,7 +30,7 @@ namespace RandomWorld
         private Animator animator;
 
         private Vector3 movement;
-        [Header("¡å---Character Move---¡å")]
+        [Header("¡å---Character MonsterMove---¡å")]
         public float moveSpeed = 3f;
 
         private float horizontalBlend;

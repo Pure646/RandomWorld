@@ -151,7 +151,7 @@ namespace RandomWorld
             //agent.Stop();
             // Ai의 이동을 멈추게 하는 메서드
 
-            //agent.Move(Vector3 offset)
+            //agent.MonsterMove(Vector3 offset)
             // 지정된 오픗겟만큼 AI를 즉시 이동시킴 (AI가 NavMesh를 벗어나지 않음.
 
             //agent.updateRotation = false;
