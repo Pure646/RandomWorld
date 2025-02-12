@@ -293,6 +293,7 @@ namespace RandomWorld
             leftHandIKTarget.localPosition = currentWeapon.WeaponData.LeftHandPosition;
             leftHandIKTarget.localRotation = Quaternion.Euler(currentWeapon.WeaponData.LeftHandRotation);
         }
+
         public void ApplyDamage(float damage)
         {
             damage = this.damage;
@@ -379,5 +380,6 @@ namespace RandomWorld
             }
         }
 
+        
     }
 }

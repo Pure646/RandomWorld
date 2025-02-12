@@ -5,10 +5,11 @@ using UnityEngine.AI;
 
 namespace RandomWorld
 {
-    public class Boxunity : MonoBehaviour, IDamage
+    public class Boxunity : MonoBehaviour, IDamage , IBotCharacter
     {
         [SerializeField] private float boxHealthMax;
         [SerializeField] private float boxHealth;
+        [SerializeField] private float boxmana;
         [SerializeField] private float regenerateCoolTime = 5f;
 
         public Transform PlayerTransform;
@@ -31,7 +32,16 @@ namespace RandomWorld
         {
             SetTime();
         }
-        
+        public void HealthPoint(float damage)
+        {
+            boxHealth -= damage;
+        }
+
+        public void ManaPoint(float used_mana)
+        {
+            boxmana -= used_mana;
+        }
+
         private void ResetSetting()
         {
             boxHealth = boxHealthMax;

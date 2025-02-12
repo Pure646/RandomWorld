@@ -7,23 +7,26 @@ namespace RandomWorld
 {
     public class BoxBase : MonoBehaviour
     {
+        private Boxunity boxunity;
+
         [SerializeField] private Transform UnityChan;
         [SerializeField] private Transform Object;
         [SerializeField] private float MaxSpeed;
         [SerializeField] private float CurrentSpeed = 1f;
-
         private float CurrentTime;
         private float RandomNumber;
 
         private Animator animator;
         private NavMeshAgent agent;
-
         private float Magnitude;
+
+        public float damage;
 
         private void Awake()
         {
             animator = GetComponent<Animator>();
             agent = GetComponent<NavMeshAgent>();
+            boxunity = GetComponent<Boxunity>();
         }
         private void Start()
         {
@@ -37,6 +40,19 @@ namespace RandomWorld
             Rotate();
             SetTime();
         }
+        private void FixedUpdate()
+        {
+            boxHealth();
+        }
+
+        private void boxHealth()
+        {
+            if(Input.GetKeyDown(KeyCode.G))
+            {
+                boxunity.HealthPoint(damage);
+            }
+        }
+
         private void SetTime()
         {
             if (Time.time > CurrentTime + 2f)
